@@ -3,11 +3,9 @@ import { Header } from './Header';
 
 export const Layout = () => {
   return (
-    <div className="flex flex-col min-h-full mx-auto px-2 max-w-6xl">
+    <div className="layout flex flex-col min-h-full mx-auto px-2 pt-2 max-w-6xl">
       <Header></Header>
-      <main className="grow">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 };

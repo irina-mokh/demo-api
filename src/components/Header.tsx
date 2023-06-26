@@ -16,14 +16,14 @@ const ROUTES = [
 ];
 export const Header = () => {
   const tabs = ROUTES.map((route, i) => (
-    <li key={i}>
+    <li key={i} className="grow">
       <NavItem {...route} />
     </li>
   ));
   return (
-    <header className="py-3">
+    <header className="">
       <nav>
-        <ul className="flex justify-between">{tabs}</ul>
+        <ul className="flex justify-between gap-1">{tabs}</ul>
       </nav>
     </header>
   );
