@@ -1,3 +1,9 @@
+import { Page } from './Page';
+
 export const PhotosPage = () => {
-  return <h2>Photos page</h2>;
+  return (
+    <Page title="Photos">
+      <section>...photos...</section>
+    </Page>
+  );
 };

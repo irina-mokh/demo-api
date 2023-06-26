@@ -1,3 +1,9 @@
+import { Page } from './Page';
+
 export const PostsPage = () => {
-  return <h2>Posts Page</h2>;
+  return (
+    <Page title="Posts">
+      <section>...posts...</section>
+    </Page>
+  );
 };

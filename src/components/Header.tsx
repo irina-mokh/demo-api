@@ -22,7 +22,7 @@ export const Header = () => {
   ));
   return (
     <header className="py-3">
-      <nav className="">
+      <nav>
         <ul className="flex justify-between">{tabs}</ul>
       </nav>
     </header>
