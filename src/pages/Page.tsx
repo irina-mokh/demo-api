@@ -10,8 +10,8 @@ export const Page = ({ title, children }: PageProps) => {
   }, [title]);
 
   return (
-    <main className="p-2 bg-gray-800 grow">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <main className="page p-4 bg-gray-800 grow">
+      <h2 className="visually-hidden">{title}</h2>
       {children}
     </main>
   );

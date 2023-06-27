@@ -5,6 +5,7 @@ import { selectPosts } from '../store/posts/selectors';
 import { getPosts } from '../store/posts/actions';
 
 import { Page } from './Page';
+import { Post } from '../components/Post';
 
 export const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -14,17 +15,12 @@ export const PostsPage = () => {
     dispatch(getPosts());
   }, []);
 
-  const posts = data.map((post) => (
-    <li key={post.id} className="p-3">
-      <h3 className="font-bold">{post.title}</h3>
-      {post.body}
-    </li>
-  ));
+  const posts = data.map((post) => <Post key={post.id} {...post} />);
 
   return (
     <Page title="Posts">
       <section>
-        <ul>{posts}</ul>
+        <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 ">{posts}</ul>
       </section>
     </Page>
   );
