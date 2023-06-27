@@ -1,27 +1,39 @@
 import { useEffect, useState } from 'react';
-import { IComment, IPost, IUser } from '../utils/types';
+import { IComment, IPost } from '../utils/types';
 import { api } from '../utils/axios';
 import { IconBtn } from './IconBtn';
 import cn from 'classnames';
 import { Comment } from './Comment';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
-import { toggleFavorite } from '../store/posts/reducer';
+import { editPost } from '../store/posts/reducer';
 
-export const Post = ({ title, body, userId, id, favorite }: IPost) => {
+export const Post = (props: IPost) => {
+  const { userId, id, favorite } = props;
   const dispatch: AppDispatch = useDispatch();
-  const [user, setUser] = useState<Partial<IUser>>({});
 
   const [comments, setComments] = useState<Array<IComment>>([]);
   const [showComments, setShowComments] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
-  //get user name by userId
+  // local state for editing
+  const [post, setPost] = useState(props);
+
+  useEffect(() => {
+    setPost(props);
+  }, [props]);
+  //get user name by userId and add it to state
   useEffect(() => {
     const getUserName = async (userId: number) => {
       const res = await api.get(`users/${userId}`);
-      setUser(res.data);
+      dispatch(
+        editPost({
+          ...post,
+          userName: res.data.name,
+        })
+      );
     };
-    getUserName(userId);
+    if (!props.userName) getUserName(userId);
   }, [userId]);
 
   //get comments by post id
@@ -33,6 +45,7 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
     if (showComments) getComments(id);
   }, [userId, showComments]);
 
+  // render posts
   const commentsElems = comments.map((comment: IComment) => (
     <Comment {...comment} key={comment.id} />
   ));
@@ -43,7 +56,25 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
   };
 
   const onFavBtn = () => {
-    dispatch(toggleFavorite(id));
+    dispatch(editPost({ ...post, favorite: !props.favorite }));
+  };
+
+  const onEditBtn = () => {
+    setIsEditable(!isEditable);
+  };
+
+  const onSaveBtn = () => {
+    dispatch(
+      editPost({
+        ...post,
+      })
+    );
+    setIsEditable(false);
+  };
+
+  const onCancelBtn = () => {
+    setPost(props);
+    setIsEditable(false);
   };
 
   const postClasses = cn({
@@ -55,13 +86,40 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
     <li className={postClasses}>
       <article className="content flex flex-col justify-between h-full">
         <section className="mr-5">
-          <h3 className="font-bold text-xl">{title}</h3>
-          <p className="text-teal-400 text-sm">{user?.name}</p>
-          <p className=" my-2 text-gray-200 text-sm">{body}</p>
+          <textarea
+            contentEditable={isEditable}
+            className="w-full h-18 resize-none bg-transparent font-bold text-xl"
+            value={post.title}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setPost({ ...post, title: e.target.value });
+            }}
+          />
+          <input
+            disabled={!isEditable}
+            className="w-full bg-transparent text-teal-400 text-sm"
+            value={post.userName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setPost({ ...post, userName: e.target.value });
+            }}
+          />
+          <textarea
+            disabled={!isEditable}
+            className=" w-full h-24 resize-none my-2 bg-transparent  text-gray-200 text-sm"
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setPost({ ...post, body: e.target.value });
+            }}
+            value={post.body}
+          />
         </section>
 
+        {isEditable && (
+          <div className="absolute left-2 bottom-4 flex">
+            <IconBtn type="check" handler={onSaveBtn} />
+            <IconBtn type="cancel" handler={onCancelBtn} />
+          </div>
+        )}
         <div className="controls flex justify-end mx-2 my-1">
-          <IconBtn type="edit" />
+          <IconBtn type="edit" isActive={isEditable} handler={onEditBtn} />
           <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
           <IconBtn type="delete" />
           <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />

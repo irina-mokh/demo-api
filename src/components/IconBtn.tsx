@@ -1,4 +1,4 @@
-import { ChatBubbleLeftEllipsisIcon, PencilIcon, StarIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftEllipsisIcon, CheckIcon, PencilIcon, StarIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
 
 const ICONS = {
@@ -6,6 +6,8 @@ const ICONS = {
   favorite: <StarIcon />,
   edit: <PencilIcon />,
   delete: <TrashIcon />,
+  check: <CheckIcon />,
+  cancel: <XMarkIcon />
 };
 
 type IconProps = {

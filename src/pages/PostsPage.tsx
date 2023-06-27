@@ -12,10 +12,12 @@ export const PostsPage = () => {
   const { data } = useSelector(selectPosts);
 
   useEffect(() => {
-    dispatch(getPosts());
+    if (!localStorage.getItem('reduxState')) {
+      dispatch(getPosts());
+    }
   }, []);
 
-  const posts = data.map((post) => <Post key={post.id} {...post} />);
+  const posts = data.slice(0, 10).map((post) => <Post key={post.id} {...post} />);
 
   return (
     <Page title="Posts">

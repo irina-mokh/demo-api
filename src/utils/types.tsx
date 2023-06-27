@@ -4,6 +4,7 @@ export interface IPost {
   title: string;
   body: string;
   favorite: boolean;
+  userName: string;
 }
 
 export interface IUser {

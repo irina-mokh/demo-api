@@ -10,11 +10,10 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    toggleFavorite: (state, { payload }) => {
+    editPost: (state, { payload }) => {
       const newArr = [...state.data];
-      const index = newArr.findIndex((p) => (p.id = payload));
-      const curValue = newArr[index].favorite;
-      newArr[index].favorite = !curValue;
+      const index = newArr.findIndex((p) => p.id === payload.id);
+      newArr[index] = { ...newArr[index], ...payload };
       state.data = newArr;
     },
   },
@@ -34,6 +33,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { toggleFavorite } = postsSlice.actions;
+export const { editPost } = postsSlice.actions;
 
 export default postsSlice.reducer;
