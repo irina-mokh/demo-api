@@ -7,11 +7,15 @@ const initialState: IPostsState = {
 };
 
 export const postsSlice = createSlice({
-  name: 'main',
+  name: 'posts',
   initialState,
   reducers: {
-    setPageActive: (state, { payload }) => {
-      // state.curPage = payload;
+    toggleFavorite: (state, { payload }) => {
+      const newArr = [...state.data];
+      const index = newArr.findIndex((p) => (p.id = payload));
+      const curValue = newArr[index].favorite;
+      newArr[index].favorite = !curValue;
+      state.data = newArr;
     },
   },
   extraReducers: (builder) => {
@@ -30,6 +34,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { setPageActive } = postsSlice.actions;
+export const { toggleFavorite } = postsSlice.actions;
 
 export default postsSlice.reducer;

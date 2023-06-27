@@ -4,8 +4,12 @@ import { api } from '../utils/axios';
 import { IconBtn } from './IconBtn';
 import cn from 'classnames';
 import { Comment } from './Comment';
+import { AppDispatch } from '../store';
+import { useDispatch } from 'react-redux';
+import { toggleFavorite } from '../store/posts/reducer';
 
 export const Post = ({ title, body, userId, id, favorite }: IPost) => {
+  const dispatch: AppDispatch = useDispatch();
   const [user, setUser] = useState<Partial<IUser>>({});
 
   const [comments, setComments] = useState<Array<IComment>>([]);
@@ -33,8 +37,13 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
     <Comment {...comment} key={comment.id} />
   ));
 
-  const toggleComments = () => {
+  // buttons' handlers
+  const onCommentBtn = () => {
     setShowComments(!showComments);
+  };
+
+  const onFavBtn = () => {
+    dispatch(toggleFavorite(id));
   };
 
   const postClasses = cn({
@@ -53,9 +62,9 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
 
         <div className="controls flex justify-end mx-2 my-1">
           <IconBtn type="edit" />
-          <IconBtn type="favorite" isActive={favorite} />
+          <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
           <IconBtn type="delete" />
-          <IconBtn type="comments" isActive={showComments} handler={toggleComments} />
+          <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />
         </div>
       </article>
       <section className="comments text-xs">
