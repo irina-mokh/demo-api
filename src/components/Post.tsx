@@ -3,6 +3,7 @@ import { IComment, IPost, IUser } from '../utils/types';
 import { api } from '../utils/axios';
 import { IconBtn } from './IconBtn';
 import cn from 'classnames';
+import { Comment } from './Comment';
 
 export const Post = ({ title, body, userId, id, favorite }: IPost) => {
   const [user, setUser] = useState<Partial<IUser>>({});
@@ -25,31 +26,29 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
       const res = await api.get(`posts/${id}/comments`);
       setComments(res.data);
     };
-    getComments(id);
-  }, [userId]);
+    if (showComments) getComments(id);
+  }, [userId, showComments]);
 
-  const commentsElems = comments.map(({ name, email, body }: IComment) => (
-    <li className="comment bg-gray-700 bg-opacity-20 p-2 rounded-md my-1">
-      <p className="py-1">{name}</p>
-      <p>{email}</p>
-      <p>{body}</p>
-    </li>
+  const commentsElems = comments.map((comment: IComment) => (
+    <Comment {...comment} key={comment.id} />
   ));
+
   const toggleComments = () => {
     setShowComments(!showComments);
   };
 
   const postClasses = cn({
-    'relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between': true,
+    'post relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between':
+      true,
     'md:col-span-2': showComments,
   });
   return (
     <li className={postClasses}>
-      <article className="content ">
+      <article className="content flex flex-col justify-between h-full">
         <section className="mr-5">
-          <h3 className="font-bold text-lg">{title}</h3>
+          <h3 className="font-bold text-xl">{title}</h3>
           <p className="text-teal-400 text-sm">{user?.name}</p>
-          <p className="text-gray-200 text-sm">{body}</p>
+          <p className=" my-2 text-gray-200 text-sm">{body}</p>
         </section>
 
         <div className="controls flex justify-end mx-2 my-1">
@@ -59,10 +58,10 @@ export const Post = ({ title, body, userId, id, favorite }: IPost) => {
           <IconBtn type="comments" isActive={showComments} handler={toggleComments} />
         </div>
       </article>
-      <section className="text-xs">
+      <section className="comments text-xs">
         {comments && showComments && (
           <>
-            <h3 className="text-sm"> Commnets:</h3>
+            <h3 className="text-base"> Comments:</h3>
             <ul>{commentsElems}</ul>
           </>
         )}
