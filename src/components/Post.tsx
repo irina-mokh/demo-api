@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { Comment } from './Comment';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
-import { editPost } from '../store/posts/reducer';
+import { deletePost, editPost } from '../store/posts/reducer';
 
 export const Post = (props: IPost) => {
   const { userId, id, favorite } = props;
@@ -77,6 +77,10 @@ export const Post = (props: IPost) => {
     setIsEditable(false);
   };
 
+  const onDeleteBtn = () => {
+    dispatch(deletePost(id));
+  };
+
   const postClasses = cn({
     'post relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between':
       true,
@@ -121,7 +125,7 @@ export const Post = (props: IPost) => {
         <div className="controls flex justify-end mx-2 my-1">
           <IconBtn type="edit" isActive={isEditable} handler={onEditBtn} />
           <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
-          <IconBtn type="delete" />
+          <IconBtn type="delete" handler={onDeleteBtn} />
           <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />
         </div>
       </article>
