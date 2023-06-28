@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getPosts } from './actions';
-import { IPostsState } from '../../utils/types';
+import { IPostsState, IPost } from '../../utils/types';
 
 const initialState: IPostsState = {
   data: [],
+  display: [],
   perPage: '10',
+  filter: {
+    userName: '',
+    title: '',
+    favorite: false,
+  },
 };
 
 export const postsSlice = createSlice({
@@ -24,6 +30,17 @@ export const postsSlice = createSlice({
     setPostsPerPage: (state, { payload }) => {
       state.perPage = payload;
     },
+    filterPosts: (state, { payload }) => {
+      const { value } = payload;
+      // eslint-disable-next-line prettier/prettier
+      const prop = payload.prop as keyof IPost;
+      state.filter = {
+        ...state.filter,
+        [prop]: value,
+      };
+      // eslint-disable-next-line prettier/prettier
+      state.display = state.data.filter((post) => post[prop] === value);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,6 +51,7 @@ export const postsSlice = createSlice({
       .addCase(getPosts.fulfilled, (state, { payload }) => {
         // state.error = null;
         state.data = [...payload];
+        state.display = [...payload];
       })
       .addCase(getPosts.rejected, (state, { payload }) => {
         // state.error = String(payload);
@@ -41,6 +59,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPost, deletePost, setPostsPerPage } = postsSlice.actions;
+export const { editPost, deletePost, setPostsPerPage, filterPosts } = postsSlice.actions;
 
 export default postsSlice.reducer;

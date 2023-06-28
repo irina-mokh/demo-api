@@ -7,32 +7,36 @@ import { getPosts } from '../store/posts/actions';
 import { Page } from './Page';
 import { Post } from '../components/Post';
 import { PerPageSelect } from '../components/PerPageSelect';
+import { Filter } from '../components/Filter';
+import { Select } from '../components/Select';
+import { UserFilter } from '../components/Filters/UserFilter';
 
 export const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { data, perPage } = useSelector(selectPosts);
+  const { data, perPage, display } = useSelector(selectPosts);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    if (!localStorage.getItem('reduxState')) {
+    if (!data.length) {
       dispatch(getPosts());
     }
   }, []);
 
-  let postsPerPage = data;
+  let postsPerPage = display;
   if (perPage !== 'all') {
-    postsPerPage = data.slice(page * +perPage, +perPage * (page + 1));
+    postsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
   }
-
-  const posts = postsPerPage.map((post) => <Post key={post.id} {...post} />);
+  const postElems = postsPerPage.map((post) => <Post key={post.id} {...post} />);
 
   return (
     <Page title="Posts">
       <PerPageSelect />
-      {/* <Filter /> */}
+      <UserFilter />
+      <Filter prop="title" />
+      <Filter prop="favorite" />
       {/* <Sort /> */}
       <section>
-        <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 ">{posts}</ul>
+        <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 ">{postElems}</ul>
       </section>
     </Page>
   );

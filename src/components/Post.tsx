@@ -7,7 +7,6 @@ import { Comment } from './Comment';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { deletePost, editPost } from '../store/posts/reducer';
-import { Modal } from './Modal';
 import { ConfirmDialog } from './ConfirmDialog';
 
 export const Post = (props: IPost) => {
@@ -26,18 +25,18 @@ export const Post = (props: IPost) => {
   }, [props]);
 
   //get user name by userId and add it to state
-  useEffect(() => {
-    const getUserName = async (userId: number) => {
-      const res = await api.get(`users/${userId}`);
-      dispatch(
-        editPost({
-          ...post,
-          userName: res.data.name,
-        })
-      );
-    };
-    if (!props.userName) getUserName(userId);
-  }, [userId]);
+  // useEffect(() => {
+  //   const getUserName = async (userId: number) => {
+  //     const res = await api.get(`users/${userId}`);
+  //     dispatch(
+  //       editPost({
+  //         ...post,
+  //         userName: res.data.name,
+  //       })
+  //     );
+  //   };
+  //   if (!props.userName) getUserName(userId);
+  // }, [userId]);
 
   //get comments by post id
   useEffect(() => {
@@ -87,37 +86,39 @@ export const Post = (props: IPost) => {
   const closeConfirmModal = () => {
     setIsDialog(false);
   };
+
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    prop: string
+  ) => {
+    setPost({ ...post, [prop]: e.target.value });
+  };
   const postClasses = cn({
     'post relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between':
       true,
     'md:col-span-2': showComments,
   });
+
   return (
     <li className={postClasses}>
       <article className="content flex flex-col justify-between h-full">
         <section className="mr-5">
           <textarea
-            contentEditable={isEditable}
+            disabled={!isEditable}
             className="w-full h-18 resize-none bg-transparent font-bold text-xl"
             value={post.title}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setPost({ ...post, title: e.target.value });
-            }}
+            onChange={(e) => handleTextChange(e, 'title')}
           />
           <input
             disabled={!isEditable}
             className="w-full bg-transparent text-teal-400 text-sm"
             value={post.userName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setPost({ ...post, userName: e.target.value });
-            }}
+            onChange={(e) => handleTextChange(e, 'userName')}
           />
           <textarea
             disabled={!isEditable}
             className=" w-full h-24 resize-none my-2 bg-transparent  text-gray-200 text-sm"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setPost({ ...post, body: e.target.value });
-            }}
+            onChange={(e) => handleTextChange(e, 'body')}
             value={post.body}
           />
         </section>
