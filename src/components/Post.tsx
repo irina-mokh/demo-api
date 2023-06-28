@@ -7,6 +7,8 @@ import { Comment } from './Comment';
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { deletePost, editPost } from '../store/posts/reducer';
+import { Modal } from './Modal';
+import { ConfirmDialog } from './ConfirmDialog';
 
 export const Post = (props: IPost) => {
   const { userId, id, favorite } = props;
@@ -16,12 +18,13 @@ export const Post = (props: IPost) => {
   const [showComments, setShowComments] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
+  const [isDialog, setIsDialog] = useState(false);
   // local state for editing
   const [post, setPost] = useState(props);
-
   useEffect(() => {
     setPost(props);
   }, [props]);
+
   //get user name by userId and add it to state
   useEffect(() => {
     const getUserName = async (userId: number) => {
@@ -81,6 +84,9 @@ export const Post = (props: IPost) => {
     dispatch(deletePost(id));
   };
 
+  const closeConfirmModal = () => {
+    setIsDialog(false);
+  };
   const postClasses = cn({
     'post relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between':
       true,
@@ -116,16 +122,19 @@ export const Post = (props: IPost) => {
           />
         </section>
 
+        {/* buttons for edit mode */}
         {isEditable && (
           <div className="absolute left-2 bottom-4 flex">
             <IconBtn type="check" handler={onSaveBtn} />
             <IconBtn type="cancel" handler={onCancelBtn} />
           </div>
         )}
+
+        {/* post buttons */}
         <div className="controls flex justify-end mx-2 my-1">
           <IconBtn type="edit" isActive={isEditable} handler={onEditBtn} />
           <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
-          <IconBtn type="delete" handler={onDeleteBtn} />
+          <IconBtn type="delete" handler={() => setIsDialog(true)} />
           <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />
         </div>
       </article>
@@ -141,6 +150,13 @@ export const Post = (props: IPost) => {
         type="checkbox"
         className="absolute top-2 right-2 bg-transparent border-gray-100 accent-teal-500 w-4 h-4"
       ></input>
+      {isDialog && (
+        <ConfirmDialog
+          close={closeConfirmModal}
+          confirm={onDeleteBtn}
+          text={`Delete post ${post.title} by ${post.userName}?`}
+        />
+      )}
     </li>
   );
 };
