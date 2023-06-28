@@ -20,7 +20,7 @@ export interface IComment {
 }
 
 export interface IPageFilter {
-  perPage: number;
+  perPage: string;
 }
 export interface IPostsState extends IPageFilter {
   data: Array<IPost>;
@@ -28,4 +28,15 @@ export interface IPostsState extends IPageFilter {
 
 export interface RootState {
   posts: IPostsState;
+  photos: [];
 }
+
+export type Pages = 'posts' | 'photos' | 'tasks';
+
+export type IPerPageSelector = {
+  // eslint-disable-next-line prettier/prettier
+  [key in Pages]?: {
+    value: string,
+    handler: (e: React.ChangeEvent<HTMLSelectElement>) => void,
+  };
+};

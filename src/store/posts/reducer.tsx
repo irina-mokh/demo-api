@@ -4,7 +4,7 @@ import { IPostsState } from '../../utils/types';
 
 const initialState: IPostsState = {
   data: [],
-  perPage: 10,
+  perPage: '10',
 };
 
 export const postsSlice = createSlice({

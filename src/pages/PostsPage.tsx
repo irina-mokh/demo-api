@@ -19,13 +19,18 @@ export const PostsPage = () => {
     }
   }, []);
 
-  const posts = data
-    .slice(page * +perPage, +perPage * (page + 1))
-    .map((post) => <Post key={post.id} {...post} />);
+  let postsPerPage = data;
+  if (perPage !== 'all') {
+    postsPerPage = data.slice(page * +perPage, +perPage * (page + 1));
+  }
+
+  const posts = postsPerPage.map((post) => <Post key={post.id} {...post} />);
 
   return (
     <Page title="Posts">
-      <PerPageSelect page="posts" />
+      <PerPageSelect />
+      {/* <Filter /> */}
+      {/* <Sort /> */}
       <section>
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 ">{posts}</ul>
       </section>
