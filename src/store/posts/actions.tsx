@@ -8,7 +8,6 @@ export const getPosts = createAsyncThunk(
   async function (arg, { rejectWithValue }) {
     try {
       const response = await api.get('posts');
-      console.log(response.data);
       return response.data;
     } catch (err) {
       // eslint-disable-next-line prettier/prettier

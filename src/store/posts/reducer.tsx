@@ -4,6 +4,7 @@ import { IPostsState } from '../../utils/types';
 
 const initialState: IPostsState = {
   data: [],
+  perPage: 10,
 };
 
 export const postsSlice = createSlice({
@@ -19,6 +20,9 @@ export const postsSlice = createSlice({
     deletePost: (state, { payload }) => {
       const newArr = state.data.filter((post) => post.id !== payload);
       state.data = newArr;
+    },
+    setPostsPerPage: (state, { payload }) => {
+      state.perPage = payload;
     },
   },
   extraReducers: (builder) => {
@@ -37,6 +41,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPost, deletePost } = postsSlice.actions;
+export const { editPost, deletePost, setPostsPerPage } = postsSlice.actions;
 
 export default postsSlice.reducer;

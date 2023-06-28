@@ -20,9 +20,9 @@ export interface IComment {
 }
 
 export interface IPageFilter {
-  amount: number;
+  perPage: number;
 }
-export interface IPostsState {
+export interface IPostsState extends IPageFilter {
   data: Array<IPost>;
 }
 
