@@ -6,7 +6,7 @@ import { Layout } from './Layout';
 
 function App() {
   return (
-    <div className="app bg-gray-700 text-slate-50">
+    <div className="app bg-gray-700 text-slate-50 min-h-screen">
       <h1 className="visually-hidden">Demo for JSONPlaceholder API</h1>
       <Router>
         <Routes>

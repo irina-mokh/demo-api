@@ -30,7 +30,7 @@ export const postsSlice = createSlice({
     setPostsPerPage: (state, { payload }) => {
       state.perPage = payload;
     },
-    filterPosts: (state, { payload }) => {
+    changeFilter: (state, { payload }) => {
       const { value } = payload;
       // eslint-disable-next-line prettier/prettier
       const prop = payload.prop as keyof IPost;
@@ -38,8 +38,10 @@ export const postsSlice = createSlice({
         ...state.filter,
         [prop]: value,
       };
-      // eslint-disable-next-line prettier/prettier
-      state.display = state.data.filter((post) => post[prop] === value);
+    },
+    // filter posts using all filters
+    filterPosts: (state) => {
+        state.display = state.data.filter(p =>  state.filter.userName === 'all' ? true : p.userName === state.filter.userName).filter(p => state.filter.title ? p.title.includes(state.filter.title) : true).filter(p => state.filter.favorite ? p.favorite : true);
     },
   },
   extraReducers: (builder) => {
@@ -59,6 +61,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPost, deletePost, setPostsPerPage, filterPosts } = postsSlice.actions;
+export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter } = postsSlice.actions;
 
 export default postsSlice.reducer;

@@ -5,12 +5,16 @@ import { IconBtn } from './IconBtn';
 import cn from 'classnames';
 import { Comment } from './Comment';
 import { AppDispatch } from '../store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deletePost, editPost } from '../store/posts/reducer';
 import { ConfirmDialog } from './ConfirmDialog';
+import { selectPosts } from '../store/posts/selectors';
 
-export const Post = (props: IPost) => {
-  const { userId, id, favorite } = props;
+export const Post = ({ id }: { id: number }) => {
+  // console.log('render post', props);
+  const { data } = useSelector(selectPosts);
+  const post = data.filter((p) => p.id === id)[0];
+  const { userId, favorite } = post;
   const dispatch: AppDispatch = useDispatch();
 
   const [comments, setComments] = useState<Array<IComment>>([]);
@@ -19,24 +23,10 @@ export const Post = (props: IPost) => {
 
   const [isDialog, setIsDialog] = useState(false);
   // local state for editing
-  const [post, setPost] = useState(props);
+  const [postEdit, setPostEdit] = useState(post);
   useEffect(() => {
-    setPost(props);
-  }, [props]);
-
-  //get user name by userId and add it to state
-  // useEffect(() => {
-  //   const getUserName = async (userId: number) => {
-  //     const res = await api.get(`users/${userId}`);
-  //     dispatch(
-  //       editPost({
-  //         ...post,
-  //         userName: res.data.name,
-  //       })
-  //     );
-  //   };
-  //   if (!props.userName) getUserName(userId);
-  // }, [userId]);
+    setPostEdit(post);
+  }, [post]);
 
   //get comments by post id
   useEffect(() => {
@@ -58,7 +48,7 @@ export const Post = (props: IPost) => {
   };
 
   const onFavBtn = () => {
-    dispatch(editPost({ ...post, favorite: !props.favorite }));
+    dispatch(editPost({ ...post, favorite: !post.favorite }));
   };
 
   const onEditBtn = () => {
@@ -68,14 +58,14 @@ export const Post = (props: IPost) => {
   const onSaveBtn = () => {
     dispatch(
       editPost({
-        ...post,
+        ...postEdit,
       })
     );
     setIsEditable(false);
   };
 
   const onCancelBtn = () => {
-    setPost(props);
+    setPostEdit(post);
     setIsEditable(false);
   };
 
@@ -91,7 +81,7 @@ export const Post = (props: IPost) => {
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     prop: string
   ) => {
-    setPost({ ...post, [prop]: e.target.value });
+    setPostEdit({ ...postEdit, [prop]: e.target.value });
   };
   const postClasses = cn({
     'post relative bg-gray-700 bg-opacity-20 p-4 rounded-md h-full flex flex-col justify-between':
@@ -106,20 +96,20 @@ export const Post = (props: IPost) => {
           <textarea
             disabled={!isEditable}
             className="w-full h-18 resize-none bg-transparent font-bold text-xl"
-            value={post.title}
+            value={postEdit.title}
             onChange={(e) => handleTextChange(e, 'title')}
           />
           <input
             disabled={!isEditable}
             className="w-full bg-transparent text-teal-400 text-sm"
-            value={post.userName}
+            value={postEdit.userName}
             onChange={(e) => handleTextChange(e, 'userName')}
           />
           <textarea
             disabled={!isEditable}
             className=" w-full h-24 resize-none my-2 bg-transparent  text-gray-200 text-sm"
             onChange={(e) => handleTextChange(e, 'body')}
-            value={post.body}
+            value={postEdit.body}
           />
         </section>
 

@@ -30,7 +30,7 @@ export const PerPageSelect = () => {
   };
 
   const options = PER_PAGE_OPTIONS.map((opt) => (
-    <option key={opt} className="bg-slate-600" value={opt}>
+    <option key={opt} value={opt}>
       {opt}
     </option>
   ));

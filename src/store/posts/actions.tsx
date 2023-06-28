@@ -14,6 +14,7 @@ export const getPosts = createAsyncThunk(
         const modifiedPost = {
           ...post,
           userName: resUser.data.name,
+          favorite: false,
         };
         return modifiedPost;
       });

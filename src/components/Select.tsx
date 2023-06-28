@@ -6,11 +6,11 @@ type SelectProps = {
 };
 export const Select = ({ handler, value, options, label }: SelectProps) => {
   return (
-    <div className="flex items-center">
-      <label htmlFor="block per-page-select mr-3">{label}</label>
+    <div className="flex flex-col">
+      <label htmlFor="per-page-select">{label}</label>
       <select
         id="per-page-select"
-        className="bg-transparent border-2 border-gray-100 rounded-md p-1"
+        className="bg-transparent border-2 border-gray-100 rounded-md p-1 child:bg-slate-600"
         onChange={handler}
         value={value}
       >
