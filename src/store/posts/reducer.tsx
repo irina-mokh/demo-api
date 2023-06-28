@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getPosts } from './actions';
 import { IPostsState, IPost } from '../../utils/types';
+import { POST_SORT_OPTIONS } from '../../utils';
 
 const initialState: IPostsState = {
   data: [],
@@ -11,6 +12,7 @@ const initialState: IPostsState = {
     title: '',
     favorite: false,
   },
+  sort: 'ID',
 };
 
 export const postsSlice = createSlice({
@@ -43,6 +45,13 @@ export const postsSlice = createSlice({
     filterPosts: (state) => {
         state.display = state.data.filter(p =>  state.filter.userName === 'all' ? true : p.userName === state.filter.userName).filter(p => state.filter.title ? p.title.includes(state.filter.title) : true).filter(p => state.filter.favorite ? p.favorite : true);
     },
+    changeSortType: (state, { payload }) => {
+      state.sort = payload;
+    },
+    sortPosts: (state) => {
+      const sortCb = POST_SORT_OPTIONS.filter(opt => opt.name == state.sort)[0].cb;
+      state.display = [...state.display].sort(sortCb);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -61,6 +70,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter } = postsSlice.actions;
+export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter, changeSortType, sortPosts } = postsSlice.actions;
 
 export default postsSlice.reducer;

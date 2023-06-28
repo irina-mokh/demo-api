@@ -1,3 +1,5 @@
+import { POST_SORT_OPTIONS } from '.';
+
 export interface IPost {
   userId: number;
   id: number;
@@ -43,6 +45,7 @@ export interface IPostsFilter extends IPageFilter {
 export interface IPostsState extends IPostsFilter {
   data: Array<IPost>;
   display: Array<IPost>;
+  sort: string;
 }
 export interface IPhotosState extends IPageFilter {
   data: Array<IAlbum>;

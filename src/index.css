@@ -29,3 +29,16 @@ code {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+.post {
+  animation: 0.2s ease-out 0s 1 slideInFromLeft;
+    @keyframes slideInFromLeft {
+      0% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  }
