@@ -13,14 +13,14 @@ export const FavoriteFilter = () => {
   };
 
   return (
-    <div className="flex items-center">
-      <label htmlFor="posts-favorite-filter">Favorite only: </label>
+    <div className="flex items-center flex-col">
+      <label htmlFor="posts-favorite-filter">Favorite: </label>
       <input
         type="checkbox"
         id="posts-favorite-filter"
         checked={favorite}
         onChange={handleFilterByFavorite}
-        className="w-5  ml-3 h-5 accent-teal-500"
+        className="w-5  h-5 accent-teal-500"
       ></input>
     </div>
   );

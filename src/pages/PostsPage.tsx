@@ -10,9 +10,9 @@ import { PerPageSelect } from '../components/PerPageSelect';
 import { UserFilter } from '../components/Filters/UserFilter';
 import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
 import { filterPosts } from '../store/posts/reducer';
+import { TitleSearch } from '../components/Filters/TitleSearch';
 
 export const PostsPage = () => {
-  console.log('render page');
   const dispatch: AppDispatch = useDispatch();
   const { data, perPage, display, filter } = useSelector(selectPosts);
   const [page, setPage] = useState(0);
@@ -36,11 +36,12 @@ export const PostsPage = () => {
   return (
     <Page title="Posts">
       <form>
-        <legend>Filters:</legend>
-        <fieldset className="flex justify-between">
-          <PerPageSelect />
+        <legend className="text-lg">Filters:</legend>
+        <fieldset className="flex justify-between py-4">
+          <TitleSearch />
           <UserFilter />
           <FavoriteFilter />
+          <PerPageSelect />
         </fieldset>
       </form>
       {/* <Sort /> */}
