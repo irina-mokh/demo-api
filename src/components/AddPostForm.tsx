@@ -19,22 +19,18 @@ export const AddPostForm = ({ close }: AddPostFormProps) => {
   const { data: users } = useSelector(selectUsers);
   const names = users.map((user) => user.name);
   const methods = useForm<IPost>({});
-  const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { isValid },
-  } = methods;
+  const { register, handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<AddPostInputs> = (post) => {
     dispatch(
       addPost({
-        ...post,
         userId: users.filter((user) => user.name == post.userName)[0].id,
+        id: data.length + 1,
+        ...post,
         favorite: false,
-        id: data.length,
       })
     );
+    close();
   };
 
   const options = names.map((n) => (
@@ -46,7 +42,7 @@ export const AddPostForm = ({ close }: AddPostFormProps) => {
     <Modal title="Create post" close={close}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" min-w-[400px] child:block [&>label]:text-teal-500 [&>label]:mt-3"
+        className=" min-w-[400px] flex flex-col [&>label]:text-teal-500 [&>label]:mt-3"
       >
         <label htmlFor="userName">User name:</label>
 
@@ -72,8 +68,10 @@ export const AddPostForm = ({ close }: AddPostFormProps) => {
           className="w-full bg-transparent resize-none  border-2 rounded-md p-1"
           {...register('body', { required: true })}
         />
-        <Btn text="Send" type="submit" />
-        <Btn text="Cancel" handler={close} />
+        <div className="flex justify-around py-3">
+          <Btn text="Cancel" handler={close} />
+          <Btn text="Send" type="submit" />
+        </div>
       </form>
     </Modal>
   );

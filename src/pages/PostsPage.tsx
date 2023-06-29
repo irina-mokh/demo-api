@@ -48,6 +48,7 @@ export const PostsPage = () => {
 
   // display post depending on page settings
   let postsPerPage = display;
+  console.log(display);
   if (perPage !== 'all') {
     postsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
   }
