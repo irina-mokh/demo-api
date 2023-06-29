@@ -6,8 +6,8 @@ const ROUTES = [
     text: 'Posts',
   },
   {
-    path: 'photos',
-    text: 'Photos',
+    path: 'albums',
+    text: 'Albums',
   },
   {
     path: 'tasks',

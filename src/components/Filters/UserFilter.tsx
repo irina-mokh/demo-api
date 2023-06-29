@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '../../store';
-import { selectPosts } from '../../store/posts/selectors';
+import { AppDispatch, HANDLERS } from '../../store';
 import { selectUsers } from '../../store/users/selectors';
-import { changeUserNamesFilter } from '../../store/posts/reducer';
 
 import { IconBtn } from '../IconBtn';
+import { useLocation } from 'react-router-dom';
+import { Pages } from '../../utils/types';
 
 export const UserFilter = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data: users } = useSelector(selectUsers);
-  const {
-    filter: { userNames },
-  } = useSelector(selectPosts);
+  // eslint-disable-next-line prettier/prettier
+  const page = useLocation().pathname.slice(1) as Pages;
+
+  const ls = localStorage.getItem('reduxState');
+  const values =  ls ? JSON.parse(ls)[page].filter.userNames : [];
+  const handler = HANDLERS[page].userNames;
 
   const [isList, setIsList] = useState(false);
   // create a local state for selection
-  const [selected, setSelected] = useState<Set<string>>(new Set(['all']));
+  const [selected, setSelected] = useState<Set<string>>(new Set(values));
 
   // create options depending on userNames in global state
   const arr = ['all', ...users.map((user) => user.name)];
@@ -62,19 +65,19 @@ export const UserFilter = () => {
     setIsList(!isList);
 
     // dispatch selection changes on list closing
-    if (isList) dispatch(changeUserNamesFilter(Array.from(selected)));
+    if (isList) dispatch(handler(Array.from(selected)));
   };
 
   return (
     <div className="user-select relative">
       <legend>By users:</legend>
       <p
-        className="border-2 rounded-md p-1 max-w-[250px] min-w-[200px]  ml-auto flex justify-between items-center"
+        className="border-2 rounded-md p-1 max-w-[250px] min-w-[200px] h-[35px] overflow-hidden ml-auto flex justify-between items-center"
         onClick={() => {
           setIsList(!isList);
         }}
       >
-        {userNames.join(', ')}
+        {values.join(', ')}
         <IconBtn type="down" isActive={isList} handler={toggleList} />
       </p>
       {isList && (

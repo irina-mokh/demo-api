@@ -6,25 +6,22 @@ const initialState: ITasksState = {
   data: [],
   display: [],
   perPage: '10',
+  filter: {
+    userNames: ['all'],
+    title: '',
+    favorite: false,
+  },
+  sort: 'ID',
 };
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {
-    setTasksPerPage: (state, { payload }) => {
-      state.perPage = payload;
-    },
-    filterTasks: (state, { payload }) => {
-      const { prop, value } = payload;
-      // eslint-disable-next-line prettier/prettier
-      // state.display = state.data.filter((post) => post[prop as keyof IPost] === value);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // getPosts
-      .addCase(getTasks.pending, (state) => {
+      .addCase(getTasks.pending, () => {
         // state.error = null;
       })
       .addCase(getTasks.fulfilled, (state, { payload }) => {
@@ -32,12 +29,12 @@ export const tasksSlice = createSlice({
         // state.data = [...payload];
         // state.display = [...payload];
       })
-      .addCase(getTasks.rejected, (state, { payload }) => {
+      .addCase(getTasks.rejected, () => {
         // state.error = String(payload);
       });
   },
 });
 
-export const { setTasksPerPage, filterTasks } = tasksSlice.actions;
+export const {} = tasksSlice.actions;
 
 export default tasksSlice.reducer;

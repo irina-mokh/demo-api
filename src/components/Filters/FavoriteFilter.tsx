@@ -1,16 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { AppDispatch } from '../../store';
-import { changeFilter } from '../../store/posts/reducer';
-import { selectPosts } from '../../store/posts/selectors';
+import { AppDispatch, HANDLERS } from '../../store';
+import { Pages } from '../../utils/types';
+import { useLocation } from 'react-router-dom';
 
 export const FavoriteFilter = () => {
   const dispatch: AppDispatch = useDispatch();
-  const {
-    filter: { favorite },
-  } = useSelector(selectPosts);
+  // eslint-disable-next-line prettier/prettier
+  const page = useLocation().pathname.slice(1) as Pages;
+
+  const ls = localStorage.getItem('reduxState');
+  const value = ls ? JSON.parse(ls)[page].filter.favorite : '';
+  const handler = HANDLERS[page].favorite;
+
   const handleFilterByFavorite = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeFilter({ prop: 'favorite', value: e.target.checked }));
+    dispatch(handler({ prop: 'favorite', value: e.target.checked }));
   };
 
   return (
@@ -19,7 +23,7 @@ export const FavoriteFilter = () => {
       <input
         type="checkbox"
         id="posts-favorite-filter"
-        checked={favorite}
+        checked={value}
         onChange={handleFilterByFavorite}
         className="w-5  h-5 accent-teal-500"
       ></input>

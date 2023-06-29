@@ -24,8 +24,6 @@ export const Post = ({ id, handleSelect }: PostProps) => {
   const { userId, favorite } = post;
   const dispatch: AppDispatch = useDispatch();
 
-  const [comments, setComments] = useState<Array<IComment>>([]);
-  const [showComments, setShowComments] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
   const [isDialog, setIsDialog] = useState(false);
@@ -35,7 +33,10 @@ export const Post = ({ id, handleSelect }: PostProps) => {
     setPostEdit(post);
   }, [post]);
 
-  //get comments by post id
+  // RENDER COMMENTS
+  const [comments, setComments] = useState<Array<IComment>>([]);
+  const [showComments, setShowComments] = useState(false);
+
   useEffect(() => {
     const getComments = async (id: number) => {
       const res = await api.get(`posts/${id}/comments`);
@@ -44,15 +45,15 @@ export const Post = ({ id, handleSelect }: PostProps) => {
     if (showComments) getComments(id);
   }, [userId, showComments]);
 
-  // render posts
   const commentsElems = comments.map((comment: IComment) => (
     <Comment {...comment} key={comment.id} />
   ));
 
-  // buttons' handlers
   const onCommentBtn = () => {
     setShowComments(!showComments);
   };
+
+  // buttons' handlers
 
   const onFavBtn = () => {
     dispatch(editPost({ ...post, favorite: !post.favorite }));
@@ -136,6 +137,7 @@ export const Post = ({ id, handleSelect }: PostProps) => {
           <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />
         </div>
       </article>
+      {/* COMMENTS */}
       <section className="comments text-xs">
         {comments && showComments && (
           <>

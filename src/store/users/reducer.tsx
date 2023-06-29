@@ -17,19 +17,19 @@ export const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // getPosts
-      .addCase(getUsers.pending, (state) => {
+      .addCase(getUsers.pending, () => {
         // state.error = null;
       })
       .addCase(getUsers.fulfilled, (state, { payload }) => {
         // state.error = null;
         state.data = [...payload];
       })
-      .addCase(getUsers.rejected, (state, { payload }) => {
+      .addCase(getUsers.rejected, () => {
         // state.error = String(payload);
       });
   },
 });
 
-export const { setTasksPerPage } = usersSlice.actions;
+export const {} = usersSlice.actions;
 
 export default usersSlice.reducer;

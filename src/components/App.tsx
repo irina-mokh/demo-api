@@ -1,7 +1,7 @@
 import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom';
 
 import { TasksPage } from '../pages/TasksPage';
-import { PhotosPage } from '../pages/PhotosPage';
+import { AlbumsPage } from '../pages/AlbumsPage';
 import { PostsPage } from '../pages/PostsPage';
 import { Layout } from './Layout';
 
@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="" element={<Navigate to="posts" replace />} />
             <Route path="posts" element={<PostsPage />} />
-            <Route path="photos" element={<PhotosPage />} />
+            <Route path="albums" element={<AlbumsPage />} />
             <Route path="tasks" element={<TasksPage />} />
           </Route>
         </Routes>
