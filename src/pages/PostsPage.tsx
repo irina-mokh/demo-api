@@ -64,6 +64,12 @@ export const PostsPage = () => {
     postsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
   }
 
+  // create an array of pages N
+  const pages = Array.from(Array(Math.ceil(display.length / +perPage)).keys());
+  const pagesEls = pages.map((n) => (
+    <Btn text={String(n + 1)} handler={() => setPage(n)} isActive={n == page} />
+  ));
+
   const postElems = postsPerPage.map((post) => {
     const handleSelectPost = (checked: boolean) => {
       if (checked) {
@@ -86,6 +92,7 @@ export const PostsPage = () => {
     </option>
   ));
 
+  // multiple actions
   const multipleDeleting = () => {
     selected.forEach((id) => {
       dispatch(deletePost(id));
@@ -105,24 +112,31 @@ export const PostsPage = () => {
 
   return (
     <Page title="Posts">
-      <form className="rounded-md bg-gray-900 bg-opacity-40 text-gray-400 px-4 py-2">
+      {/* FILTERS */}
+      <form className="flex rounded-md bg-gray-900 bg-opacity-40 text-gray-400 px-4 py-2">
         <legend className="visually-hidden text-lg">Filters:</legend>
-        <fieldset className="flex justify-between flex-wrap py-1">
+        <fieldset className="flex flex-wrap py-1 w-full justify-between child:m-2">
           <TitleSearch />
           <UserFilter />
           <Select handler={handleSortChange} value={sort} label="Sort by:" options={sortOptions} />
           <FavoriteFilter />
           <PerPageSelect />
+          <Btn text="Add post" handler={() => setIsAddForm(true)} isActive />
         </fieldset>
       </form>
-      <div className="flex justify-end mt-2">
-        <Btn text="Add post" handler={() => setIsAddForm(true)} />
-      </div>
+
+      <div className="flex justify-end mt-2"></div>
       <section>
+        {/* POSTS */}
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 mt-5">{postElems}</ul>
+
+        {/* PAGINATION */}
+        <div className="pagination child:mx-1 mt-4 w-full">{pagesEls}</div>
       </section>
+
+      {/* MODALS */}
       {isAddForm && <AddPostForm close={() => setIsAddForm(false)} />}
-      {selected.length && (
+      {selected.length > 0 && (
         <div className="bar fixed bottom-2 right-2 rounded-md min-w-[40%] flex justify-between items-center bg-gray-700 border-2 border-teal-400 shadow-2xl p-3 m-auto child:mx-2">
           <p>For all checked items:</p>
           <Btn text="Add to favorite" handler={() => setConfirmDialogFav(true)} />

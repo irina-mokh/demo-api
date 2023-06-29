@@ -66,10 +66,10 @@ export const UserFilter = () => {
   };
 
   return (
-    <fieldset className="user-select relative w-[300px]">
+    <div className="user-select relative">
       <legend>By users:</legend>
       <p
-        className="border-2 rounded-md p-1 flex justify-between items-center"
+        className="border-2 rounded-md p-1 max-w-[250px] min-w-[200px]  ml-auto flex justify-between items-center"
         onClick={() => {
           setIsList(!isList);
         }}
@@ -82,6 +82,6 @@ export const UserFilter = () => {
           <ul>{options}</ul>
         </div>
       )}
-    </fieldset>
+    </div>
   );
 };

@@ -20,7 +20,7 @@ export const TitleSearch = () => {
         id="title-search"
         onChange={handleTitleSearch}
         value={title}
-        className="bg-transparent border-2 border-gray-100 rounded-md p-1"
+        className="max-w-[250px] bg-transparent border-2 border-gray-100 rounded-md p-1"
       />
     </div>
   );
