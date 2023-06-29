@@ -58,11 +58,20 @@ export const PostsPage = () => {
       <form className="rounded-md bg-gray-900 bg-opacity-40 text-gray-400 px-4 py-2">
         <legend className="visually-hidden text-lg">Filters:</legend>
         <fieldset className="flex justify-between flex-wrap py-1">
-          <TitleSearch />
           <UserFilter />
-          <Select handler={handleSortChange} value={sort} label="Sort by:" options={sortOptions} />
-          <FavoriteFilter />
-          <PerPageSelect />
+          <div>
+            <TitleSearch />
+            <Select
+              handler={handleSortChange}
+              value={sort}
+              label="Sort by:"
+              options={sortOptions}
+            />
+          </div>
+          <div>
+            <FavoriteFilter />
+            <PerPageSelect />
+          </div>
         </fieldset>
       </form>
       {/* <Sort /> */}

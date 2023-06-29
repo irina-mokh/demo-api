@@ -35,7 +35,7 @@ export interface IPageFilter {
 
 export interface IPostsFilter extends IPageFilter {
   filter: {
-    userName: string;
+    userNames: Array<string>;
     title: string;
     favorite: boolean;
   }

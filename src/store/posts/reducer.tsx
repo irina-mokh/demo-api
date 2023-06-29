@@ -8,7 +8,7 @@ const initialState: IPostsState = {
   display: [],
   perPage: '10',
   filter: {
-    userName: '',
+    userNames: ['all'],
     title: '',
     favorite: false,
   },
@@ -20,17 +20,29 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     editPost: (state, { payload }) => {
-      const newArr = [...state.data];
-      const index = newArr.findIndex((p) => p.id === payload.id);
-      newArr[index] = { ...newArr[index], ...payload };
-      state.data = newArr;
+      const newData = [...state.data];
+      const iData = newData.findIndex((p) => p.id === payload.id);
+      newData[iData] = { ...newData[iData], ...payload };
+      state.data = newData;
+
+      const newDisplay = [...state.data];
+      const iDisplay = newDisplay.findIndex((p) => p.id === payload.id);
+      newDisplay[iDisplay] = { ...newDisplay[iDisplay], ...payload };
+      state.display = newDisplay;
+
     },
     deletePost: (state, { payload }) => {
-      const newArr = state.data.filter((post) => post.id !== payload);
-      state.data = newArr;
+      state.data = state.data.filter((post) => post.id !== payload);
+      state.display = state.display.filter((post) => post.id !== payload);
     },
     setPostsPerPage: (state, { payload }) => {
       state.perPage = payload;
+    },
+    changeUserNamesFilter: (state, { payload }) => {
+      state.filter = {
+        ...state.filter,
+        userNames: [...payload],
+      };
     },
     changeFilter: (state, { payload }) => {
       const { value } = payload;
@@ -43,7 +55,7 @@ export const postsSlice = createSlice({
     },
     // filter posts using all filters
     filterPosts: (state) => {
-        state.display = state.data.filter(p =>  state.filter.userName === 'all' ? true : p.userName === state.filter.userName).filter(p => state.filter.title ? p.title.includes(state.filter.title) : true).filter(p => state.filter.favorite ? p.favorite : true);
+        state.display = state.data.filter(p =>  state.filter.userNames.includes('all') ? true : state.filter.userNames.includes(p.userName)).filter(p => state.filter.title ? p.title.includes(state.filter.title) : true).filter(p => state.filter.favorite ? p.favorite : true);
     },
     changeSortType: (state, { payload }) => {
       state.sort = payload;
@@ -70,6 +82,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter, changeSortType, sortPosts } = postsSlice.actions;
+export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter, changeSortType, sortPosts, changeUserNamesFilter } = postsSlice.actions;
 
 export default postsSlice.reducer;
