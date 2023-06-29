@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from './Modal';
-import { selectPosts } from '../store/posts/selectors';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { AddPostInputs, IPost } from '../utils/types';
-import { Btn } from './Btn';
-import { selectUsers } from '../store/users/selectors';
+
 import { AppDispatch } from '../store';
+import { selectPosts } from '../store/posts/selectors';
+import { selectUsers } from '../store/users/selectors';
 import { addPost } from '../store/posts/actions';
+
+import { Modal } from './Modal';
+import { Btn } from './Btn';
+
+import { AddPostInputs, IPost } from '../utils/types';
 
 type AddPostFormProps = {
   close: () => void,
@@ -34,7 +37,7 @@ export const AddPostForm = ({ close }: AddPostFormProps) => {
   };
 
   const options = names.map((n) => (
-    <option key={n} value={n}>
+    <option key={n} value={n} className="bg-gray-800">
       {n}
     </option>
   ));

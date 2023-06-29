@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../utils/axios';
 import { AxiosError } from 'axios';
-import { AddPostInputs, IPost, IUser } from '../../utils/types';
+import { IPost, IUser } from '../../utils/types';
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',

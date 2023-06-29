@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Select } from '../Select';
-import { selectPosts } from '../../store/posts/selectors';
+
 import { AppDispatch } from '../../store';
-import { changeUserNamesFilter } from '../../store/posts/reducer';
-import { useState, useEffect } from 'react';
-import { IconBtn } from '../IconBtn';
+import { selectPosts } from '../../store/posts/selectors';
 import { selectUsers } from '../../store/users/selectors';
+import { changeUserNamesFilter } from '../../store/posts/reducer';
+
+import { IconBtn } from '../IconBtn';
 
 export const UserFilter = () => {
   const dispatch: AppDispatch = useDispatch();

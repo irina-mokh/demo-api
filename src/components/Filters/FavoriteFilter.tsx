@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch } from '../../store';
 import { changeFilter } from '../../store/posts/reducer';
 import { selectPosts } from '../../store/posts/selectors';

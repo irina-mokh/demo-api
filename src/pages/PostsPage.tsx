@@ -1,30 +1,42 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch } from '../store';
 import { selectPosts } from '../store/posts/selectors';
+import { selectUsers } from '../store/users/selectors';
 import { getPosts } from '../store/posts/actions';
+import { getUsers } from '../store/users/actions';
+import {
+  changeSortType,
+  deletePost,
+  editPost,
+  filterPosts,
+  sortPosts,
+} from '../store/posts/reducer';
 
 import { Page } from './Page';
 import { Post } from '../components/Post';
 import { PerPageSelect } from '../components/PerPageSelect';
 import { UserFilter } from '../components/Filters/UserFilter';
 import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
-import { changeSortType, filterPosts, sortPosts } from '../store/posts/reducer';
 import { TitleSearch } from '../components/Filters/TitleSearch';
 import { Select } from '../components/Select';
-import { POST_SORT_OPTIONS } from '../utils';
 import { Btn } from '../components/Btn';
 import { AddPostForm } from '../components/AddPostForm';
-import { selectUsers } from '../store/users/selectors';
-import { getUsers } from '../store/users/actions';
+import { ConfirmDialog } from '../components/ConfirmDialog';
+
+import { POST_SORT_OPTIONS } from '../utils';
 
 export const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data, perPage, display, filter, sort } = useSelector(selectPosts);
   const { data: users } = useSelector(selectUsers);
   const [page, setPage] = useState(0);
+  const [selected, setSelected] = useState<Array<number>>([]);
 
   const [isAddForm, setIsAddForm] = useState(false);
+  const [confirmDialogDel, setConfirmDialogDel] = useState(false);
+  const [confirmDialogFav, setConfirmDialogFav] = useState(false);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -48,11 +60,20 @@ export const PostsPage = () => {
 
   // display post depending on page settings
   let postsPerPage = display;
-  console.log(display);
   if (perPage !== 'all') {
     postsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
   }
-  const postElems = postsPerPage.map((post) => <Post key={post.id} id={post.id} />);
+
+  const postElems = postsPerPage.map((post) => {
+    const handleSelectPost = (checked: boolean) => {
+      if (checked) {
+        setSelected([...selected, post.id]);
+      } else {
+        setSelected(selected.filter((n) => n !== post.id));
+      }
+    };
+    return <Post key={post.id} id={post.id} handleSelect={handleSelectPost} />;
+  });
 
   // sort
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -64,6 +85,23 @@ export const PostsPage = () => {
       {opt.name}
     </option>
   ));
+
+  const multipleDeleting = () => {
+    selected.forEach((id) => {
+      dispatch(deletePost(id));
+    });
+    setConfirmDialogDel(false);
+    setSelected([]);
+  };
+
+  const multipleAddingToFav = () => {
+    selected.forEach((id) => {
+      const newPost = data.filter((post) => post.id === id)[0];
+      dispatch(editPost({ ...newPost, favorite: true }));
+    });
+    setConfirmDialogFav(false);
+    setSelected([]);
+  };
 
   return (
     <Page title="Posts">
@@ -84,6 +122,27 @@ export const PostsPage = () => {
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 mt-5">{postElems}</ul>
       </section>
       {isAddForm && <AddPostForm close={() => setIsAddForm(false)} />}
+      {selected.length && (
+        <div className="bar fixed bottom-2 right-2 rounded-md min-w-[40%] flex justify-between items-center bg-gray-700 border-2 border-teal-400 shadow-2xl p-3 m-auto child:mx-2">
+          <p>For all checked items:</p>
+          <Btn text="Add to favorite" handler={() => setConfirmDialogFav(true)} />
+          <Btn text="Delete" handler={() => setConfirmDialogDel(true)} />
+        </div>
+      )}
+      {confirmDialogDel && (
+        <ConfirmDialog
+          text="Delete posts?"
+          close={() => setConfirmDialogDel(false)}
+          confirm={multipleDeleting}
+        />
+      )}
+      {confirmDialogFav && (
+        <ConfirmDialog
+          text="Add posts to favorite?"
+          close={() => setConfirmDialogFav(false)}
+          confirm={multipleAddingToFav}
+        />
+      )}
     </Page>
   );
 };

@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
-import { IComment, IPost } from '../utils/types';
-import { api } from '../utils/axios';
-import { IconBtn } from './IconBtn';
-import cn from 'classnames';
-import { Comment } from './Comment';
-import { AppDispatch } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
+import { api } from '../utils/axios';
+
+import { AppDispatch } from '../store';
 import { deletePost, editPost } from '../store/posts/reducer';
-import { ConfirmDialog } from './ConfirmDialog';
 import { selectPosts } from '../store/posts/selectors';
 
-export const Post = ({ id }: { id: number }) => {
-  // console.log('render post', props);
+import { IconBtn } from './IconBtn';
+import { Comment } from './Comment';
+import { ConfirmDialog } from './ConfirmDialog';
+
+import { IComment } from '../utils/types';
+
+type PostProps = {
+  id: number,
+  handleSelect: (v: boolean) => void,
+};
+
+export const Post = ({ id, handleSelect }: PostProps) => {
   const { data } = useSelector(selectPosts);
   const post = data.filter((p) => p.id === id)[0];
   const { userId, favorite } = post;
@@ -137,8 +144,13 @@ export const Post = ({ id }: { id: number }) => {
           </>
         )}
       </section>
+      {/* selection checkbox */}
       <input
         type="checkbox"
+        defaultChecked={false}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          handleSelect(e.target.checked);
+        }}
         className="absolute top-2 right-2 bg-transparent border-gray-100 accent-teal-500 w-4 h-4"
       ></input>
       {isDialog && (

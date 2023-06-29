@@ -1,4 +1,5 @@
 import { IComment } from '../utils/types';
+
 export const Comment = ({ email, body, name }: IComment) => {
   return (
     <li className="comment bg-gray-700 bg-opacity-20 p-2 rounded-md my-1">

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Select } from '../Select';
-import { selectPosts } from '../../store/posts/selectors';
+
 import { AppDispatch } from '../../store';
+import { selectPosts } from '../../store/posts/selectors';
 import { changeFilter } from '../../store/posts/reducer';
 
 export const TitleSearch = () => {

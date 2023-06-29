@@ -1,4 +1,5 @@
 import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom';
+
 import { TasksPage } from '../pages/TasksPage';
 import { PhotosPage } from '../pages/PhotosPage';
 import { PostsPage } from '../pages/PostsPage';
