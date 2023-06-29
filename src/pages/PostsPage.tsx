@@ -26,6 +26,7 @@ import { AddPostForm } from '../components/AddPostForm';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 
 import { POST_SORT_OPTIONS } from '../utils';
+import { Pagination } from '../components/Pagination';
 
 export const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -63,12 +64,6 @@ export const PostsPage = () => {
   if (perPage !== 'all') {
     postsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
   }
-
-  // create an array of pages N
-  const pages = Array.from(Array(Math.ceil(display.length / +perPage)).keys());
-  const pagesEls = pages.map((n) => (
-    <Btn text={String(n + 1)} handler={() => setPage(n)} isActive={n == page} />
-  ));
 
   const postElems = postsPerPage.map((post) => {
     const handleSelectPost = (checked: boolean) => {
@@ -130,8 +125,7 @@ export const PostsPage = () => {
         {/* POSTS */}
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 mt-5">{postElems}</ul>
 
-        {/* PAGINATION */}
-        <div className="pagination child:mx-1 mt-4 w-full">{pagesEls}</div>
+        <Pagination currentP={page} perPage={+perPage} length={display.length} setPage={setPage} />
       </section>
 
       {/* MODALS */}
