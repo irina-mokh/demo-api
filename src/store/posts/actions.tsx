@@ -2,23 +2,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../utils/axios';
 import { AxiosError } from 'axios';
-import { IPost } from '../../utils/types';
+import { AddPostInputs, IPost, IUser } from '../../utils/types';
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
-  async function (arg, { rejectWithValue }) {
+  async function (users: IUser[], { rejectWithValue }) {
     try {
       const response = await api.get(`posts`);
-      const posts = response.data.map(async(post: IPost) => {
-        const resUser = await api.get(`users/${post.userId}`);
+      const posts = response.data.map((post: IPost) => {
         const modifiedPost = {
           ...post,
-          userName: resUser.data.name,
+          userName: users.filter(u => u.id === post.userId)[0].name,
           favorite: false,
         };
         return modifiedPost;
       });
-      return Promise.all(posts);
+      return posts;
     } catch (err) {
       // eslint-disable-next-line prettier/prettier
       return rejectWithValue((err as AxiosError).message);
@@ -26,12 +25,13 @@ export const getPosts = createAsyncThunk(
   }
 );
 
-export const getUser = createAsyncThunk(
-  'posts/getUser',
-  async function (userId, { rejectWithValue }) {
+export const addPost = createAsyncThunk(
+  'posts/addPost',
+  async function (post: IPost, { rejectWithValue }) {
     try {
-      const response = await api.get(`users/${userId}`);
-      return response.data;
+      const response = await api.post(`posts`, post);
+      console.log(response.data);
+      return post;
     } catch (err) {
       // eslint-disable-next-line prettier/prettier
       return rejectWithValue((err as AxiosError).message);

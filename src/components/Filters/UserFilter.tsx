@@ -5,20 +5,21 @@ import { AppDispatch } from '../../store';
 import { changeUserNamesFilter } from '../../store/posts/reducer';
 import { useState, useEffect } from 'react';
 import { IconBtn } from '../IconBtn';
+import { selectUsers } from '../../store/users/selectors';
 
 export const UserFilter = () => {
   const dispatch: AppDispatch = useDispatch();
+  const { data: users } = useSelector(selectUsers);
+  const {
+    filter: { userNames },
+  } = useSelector(selectPosts);
 
   const [isList, setIsList] = useState(false);
   // create a local state for selection
   const [selected, setSelected] = useState<Set<string>>(new Set(['all']));
 
   // create options depending on userNames in global state
-  const {
-    data,
-    filter: { userNames },
-  } = useSelector(selectPosts);
-  const arr = ['all', ...Array.from(new Set(data.map((post) => post.userName)))];
+  const arr = ['all', ...users.map((user) => user.name)];
 
   const options = arr.map((opt) => {
     const handleChoice = (e: React.ChangeEvent<HTMLInputElement>) => {

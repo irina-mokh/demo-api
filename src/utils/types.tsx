@@ -56,11 +56,22 @@ export interface ITasksState extends IPageFilter {
   display: Array<ITask>
 }
 
+export interface IUsersState {
+  data: Array<IUser>;
+}
+
 export interface RootState {
   posts: IPostsState;
   photos: IPhotosState;
   tasks: ITasksState;
+  users: IUsersState;
 }
+
+export type AddPostInputs = {
+  title: string,
+  userName: string,
+  body: string,
+};
 
 export type Pages = 'posts' | 'photos' | 'tasks';
 

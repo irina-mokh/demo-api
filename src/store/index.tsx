@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import postsReducer from './posts/reducer';
 import photosReducer from './photos/reducer';
 import tasksReducer from './tasks/reducer';
+import usersReducer from './users/reducer';
 
 const persistedState = () => {
   let state;
@@ -20,6 +21,7 @@ export const store = configureStore({
     posts: postsReducer,
     photos: photosReducer,
     tasks: tasksReducer,
+    users: usersReducer,
   },
 });
 

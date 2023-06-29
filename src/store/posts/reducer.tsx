@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPosts } from './actions';
+import { addPost, getPosts } from './actions';
 import { IPostsState, IPost } from '../../utils/types';
 import { POST_SORT_OPTIONS } from '../../utils';
 
@@ -78,8 +78,20 @@ export const postsSlice = createSlice({
       })
       .addCase(getPosts.rejected, (state, { payload }) => {
         // state.error = String(payload);
+      })
+      // addPost
+      .addCase(addPost.pending, (state) => {
+        // state.error = null;
+      })
+      .addCase(addPost.fulfilled, (state, { payload }) => {
+        // state.error = null;
+        state.data = [ ...state.data, payload];
+        // state.display = [...payload];
+      })
+      .addCase(addPost.rejected, (state, { payload }) => {
+        // state.error = String(payload);
       });
-  },
+    },
 });
 
 export const { editPost, deletePost, setPostsPerPage, filterPosts, changeFilter, changeSortType, sortPosts, changeUserNamesFilter } = postsSlice.actions;

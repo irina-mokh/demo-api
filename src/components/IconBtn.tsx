@@ -21,8 +21,10 @@ type IconProps = {
 
 export const IconBtn = ({ type, handler, isActive }: IconProps) => {
   const btnClasses = cn({
-    'btn p-2 w-9 h-9 mx-2 hover:child:stroke-teal-800 child:stroke-2 ': true,
+    'btn mx-2 hover:child:stroke-teal-800 child:stroke-2 ': true,
     'child:stroke-teal-600': isActive,
+    'p-2 w-9 h-9': type !== "down",
+    'h-[24px] w-[24px] p-0': type === "down",
     'rotate-180 transition-transform duration-300': isActive && type === 'down'
     });
   return <button className={btnClasses} onClick={handler}>{ICONS[type]}</button>;
