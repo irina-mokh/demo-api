@@ -8,7 +8,7 @@ import { SORT_OPTIONS } from '../../utils';
 export const Sort = () => {
   const dispatch: AppDispatch = useDispatch();
   const page = usePage();
-  const value = useLS(page).sort;
+  const value = useLS()[page].sort;
   const handler = HANDLERS[page].sort;
 
   const sortOptions = SORT_OPTIONS[page].map((opt) => (

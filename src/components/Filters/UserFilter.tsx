@@ -12,7 +12,7 @@ export const UserFilter = () => {
   const { data: users } = useSelector(selectUsers);
   const page = usePage();
 
-  const values = useLS(page).filter.userNames;
+  const values = useLS()[page].filter.userNames;
   const handler = HANDLERS[page].userNames;
 
   const [isList, setIsList] = useState(false);

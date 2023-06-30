@@ -6,7 +6,7 @@ import { useLS, usePage } from '../../utils/hooks';
 export const TitleSearch = () => {
   const dispatch: AppDispatch = useDispatch();
   const page = usePage();
-  const value = useLS(page).filter.title;
+  const value = useLS()[page].filter.title;
   const handler = HANDLERS[page].title;
 
   const handleTitleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

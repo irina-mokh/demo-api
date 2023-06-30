@@ -15,7 +15,7 @@ export function usePage() {
   return useLocation().pathname.slice(1) as Pages;
 }
 
-export function useLS(page: string){
+export function useLS(){
   const ls = localStorage.getItem('reduxState');
-  return ls ? JSON.parse(ls)[page] : store.getState();
+  return ls ? JSON.parse(ls) : store.getState();
 }

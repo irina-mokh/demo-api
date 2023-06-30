@@ -36,7 +36,7 @@ export const PostsPage = () => {
   const [isAddPost, setIsAddPost] = useState(false);
 
   useEffect(() => {
-    if (!data.length) dispatch(getPosts(users));
+    if (!data.length && users.length) dispatch(getPosts(users));
   }, [users]);
 
   // display posts depending on page settings

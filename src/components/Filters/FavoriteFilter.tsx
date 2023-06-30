@@ -6,7 +6,7 @@ import { useLS, usePage } from '../../utils/hooks';
 export const FavoriteFilter = () => {
   const dispatch: AppDispatch = useDispatch();
   const page = usePage();
-  const value = useLS(page).filter.favorite;
+  const value = useLS()[page].filter.favorite;
   const handler = HANDLERS[page].favorite;
 
   const handleFilterByFavorite = (e: React.ChangeEvent<HTMLInputElement>) => {

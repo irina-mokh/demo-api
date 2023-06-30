@@ -13,7 +13,7 @@ export const PerPageSelect = () => {
   const page = usePage();
   const dispatch: AppDispatch = useDispatch();
 
-  const value = useLS(page).perPage;
+  const value = useLS()[page].perPage;
   const handler = HANDLERS[page].perPage;
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
