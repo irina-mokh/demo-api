@@ -9,7 +9,6 @@ export const getAlbums = createAsyncThunk(
   async function (users: IUser[], { rejectWithValue }) {
     try {
       const response = await api.get('albums');
-      console.log(response.data);
       const albums = response.data.map((post: IAlbum) => {
         const modifiedItem = {
           ...post,
