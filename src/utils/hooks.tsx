@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { IItem, Pages } from './types';
+import { store } from '../store';
 
 export function useItemsPerPage(
   display: Array<IItem>,
@@ -16,5 +17,5 @@ export function usePage() {
 
 export function useLS(page: string){
   const ls = localStorage.getItem('reduxState');
-  return ls ? JSON.parse(ls)[page] : {};
+  return ls ? JSON.parse(ls)[page] : store.getState();
 }
