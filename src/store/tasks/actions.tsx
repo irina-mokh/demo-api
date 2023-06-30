@@ -2,16 +2,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../utils/axios';
 import { AxiosError } from 'axios';
+import { ITask } from '../../utils/types';
 
 export const getTasks = createAsyncThunk(
   'tasks/getTasks',
   async function (arg, { rejectWithValue }) {
-    // try {
-    //   const response = await api.get('posts');
-    //   return response.data;
-    // } catch (err) {
-    //   // eslint-disable-next-line prettier/prettier
-    //   return rejectWithValue((err as AxiosError).message);
-    // }
+    try {
+      const response = await api.get('todos');
+      return response.data;
+    } catch (err) {
+      // eslint-disable-next-line prettier/prettier
+      return rejectWithValue((err as AxiosError).message);
+    }
+  }
+);
+
+export const addTask = createAsyncThunk(
+  'tasks/addTask',
+  async function (task: ITask, { rejectWithValue }) {
+    try {
+      const response = await api.post(`todos`, task);
+      return task;
+    } catch (err) {
+      // eslint-disable-next-line prettier/prettier
+      return rejectWithValue((err as AxiosError).message);
+    }
   }
 );

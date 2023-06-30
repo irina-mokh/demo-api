@@ -7,14 +7,11 @@ import {
   changeUserFilter,
   deleteItem,
   editItem,
-  filter,
   setPerPage,
-  sort,
 } from '../../utils/helpers';
 
 const initialState: IPostsState = {
   data: [],
-  display: [],
   perPage: '10',
   filter: {
     userNames: ['all'],
@@ -33,9 +30,7 @@ export const postsSlice = createSlice({
     setPostsPerPage: setPerPage,
     changePostsUserNamesFilter: changeUserFilter,
     changePostsFilter: changeSingleFilter,
-    filterPosts: filter,
     changePostsSortType: changeSort,
-    sortPosts: sort,
   },
   extraReducers: (builder) => {
     builder
@@ -46,7 +41,6 @@ export const postsSlice = createSlice({
       .addCase(getPosts.fulfilled, (state, { payload }) => {
         // state.error = null;
         state.data = [...payload];
-        state.display = [...payload];
       })
       .addCase(getPosts.rejected, (state, { payload }) => {
         // state.error = String(payload);
@@ -58,7 +52,7 @@ export const postsSlice = createSlice({
       .addCase(addPost.fulfilled, (state, { payload }) => {
         // state.error = null;
         state.data = [...state.data, payload];
-        // state.display = [...payload];
+        // state.display = [...state.data, payload];
       })
       .addCase(addPost.rejected, (state, { payload }) => {
         // state.error = String(payload);
@@ -70,10 +64,8 @@ export const {
   editPost,
   deletePost,
   setPostsPerPage,
-  filterPosts,
   changePostsFilter,
   changePostsSortType,
-  sortPosts,
   changePostsUserNamesFilter,
 } = postsSlice.actions;
 

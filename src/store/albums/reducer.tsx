@@ -7,22 +7,19 @@ import {
   changeUserFilter,
   deleteItem,
   editItem,
-  filter,
   setPerPage,
-  sort,
 } from '../../utils/helpers';
 
 const initialState: IAlbumsState = {
   data: [],
   photos: [],
-  display: [],
   perPage: '10',
+  sort: 'ID',
   filter: {
     userNames: ['all'],
     title: '',
     favorite: false,
   },
-  sort: 'ID',
 };
 
 export const albumsSlice = createSlice({
@@ -34,9 +31,7 @@ export const albumsSlice = createSlice({
     setAlbumsPerPage: setPerPage,
     changeAlbumsUserNamesFilter: changeUserFilter,
     changeAlbumsFilter: changeSingleFilter,
-    filterAlbums: filter,
     changeAlbumsSortType: changeSort,
-    sortAlbums: sort,
   },
   extraReducers: (builder) => {
     builder
@@ -47,7 +42,6 @@ export const albumsSlice = createSlice({
       .addCase(getAlbums.fulfilled, (state, { payload }) => {
         // state.error = null;
         state.data = [...payload];
-        state.display = [...payload];
       })
       .addCase(getAlbums.rejected, () => {
         // state.error = String(payload);
@@ -69,8 +63,6 @@ export const albumsSlice = createSlice({
 export const {
   deleteAlbum,
   editAlbum,
-  filterAlbums,
-  sortAlbums,
   setAlbumsPerPage,
   changeAlbumsSortType,
   changeAlbumsFilter,

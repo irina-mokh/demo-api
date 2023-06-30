@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import { AppDispatch } from '../store';
+import { AppDispatch } from '../../store';
 
-import { Select } from './Select';
+import { Select } from '../Select';
 
-import { Pages } from '../utils/types';
-import { HANDLERS } from '../store';
+import { Pages } from '../../utils/types';
+import { HANDLERS } from '../../store';
 
 const PER_PAGE_OPTIONS = [10, 20, 50, 100, 'all'];
 

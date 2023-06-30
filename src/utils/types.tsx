@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-
 /* eslint-disable prettier/prettier */
 export interface IPost {
   userId: number;
@@ -42,34 +40,37 @@ export interface IPhoto {
 
 export interface ITask {
   id: number;
+  title: string;
+  completed: boolean;
+  userId: number;
+  userName: string;
+  favorite: boolean;
+  body: string;
 }
 
-export interface IPageFilter {
+export interface IBaseFilter {
   perPage: string;
+  sort: string;
 }
 
-export interface IFilter extends IPageFilter {
+export interface IExtraFilter extends IBaseFilter {
   filter: {
     userNames: Array<string>;
     title: string;
     favorite: boolean;
-  },
-  sort: string;
+  }
 }
 
 // PAGES STATES
-export interface IPostsState extends IFilter {
+export interface IPostsState extends IExtraFilter {
   data: Array<IPost>;
-  display: Array<IPost>;
 }
-export interface IAlbumsState extends IFilter {
+export interface IAlbumsState extends IExtraFilter {
   data: Array<IAlbum>;
-  display: Array<IAlbum>;
   photos: Array<IPhoto>
 }
-export interface ITasksState extends IFilter {
+export interface ITasksState extends IBaseFilter {
   data: Array<ITask>;
-  display: Array<ITask>
 }
 
 export interface IUsersState {
@@ -89,24 +90,26 @@ export type AddPostInputs = {
   body: string,
 };
 
+export type AddTaskInputs = {
+  title: string,
+};
+
 export type Filters = 'userNames' | 'favorite' | 'title';
-export type Pages = 'posts' | 'albums';
+export type Pages = 'posts' | 'albums' | 'tasks';
 
-export type IItem = IPost | IAlbum;
-export type IItemsState = IAlbumsState | IPostsState;
+export type ISameItems = IPost | IAlbum;
+export type IItem =  ISameItems| ITask;
 
-// export type FilterHandle = {
-//   // value: string | boolean | string[],
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   handler: any,
-// };
-export type IFilterHANDLERS  = {
-  [ket in Pages]: {
+export type ISameItemsState = IAlbumsState | IPostsState;
+export type IItemsState =  ISameItemsState | ITasksState;
+
+export type IExtraFilterHANDLERS  = {
+  [key in Pages]: {
     perPage: any,
     sort: any,
-    userNames: any, 
-    title: any, 
-    favorite: any, 
+    userNames?: any, 
+    title?: any, 
+    favorite?: any, 
   }
 };
 

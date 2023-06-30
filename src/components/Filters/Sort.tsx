@@ -13,7 +13,7 @@ export const Sort = () => {
   const value =  ls ? JSON.parse(ls)[page].sort : '';
   const handler = HANDLERS[page].sort;
 
-  const sortOptions = SORT_OPTIONS.map((opt) => (
+  const sortOptions = SORT_OPTIONS[page].map((opt) => (
     <option key={opt.name} value={String(opt.name)}>
       {opt.name}
     </option>

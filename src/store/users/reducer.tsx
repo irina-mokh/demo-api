@@ -9,11 +9,7 @@ const initialState: IUsersState = {
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {
-    setTasksPerPage: (state, { payload }) => {
-      // state.perPage = payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // getPosts

@@ -11,9 +11,9 @@ import albumsReducer, {
   changeAlbumsUserNamesFilter,
   setAlbumsPerPage,
 } from './albums/reducer';
-import tasksReducer from './tasks/reducer';
+import tasksReducer, { changeTasksSortType, setTasksPerPage } from './tasks/reducer';
 import usersReducer from './users/reducer';
-import { IFilterHANDLERS } from '../utils/types';
+import { IExtraFilterHANDLERS } from '../utils/types';
 
 const persistedState = () => {
   let state;
@@ -44,7 +44,7 @@ store.subscribe(() => {
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const HANDLERS: IFilterHANDLERS = {
+export const HANDLERS: IExtraFilterHANDLERS = {
   posts: {
     perPage: setPostsPerPage,
     sort: changePostsSortType,
@@ -58,5 +58,9 @@ export const HANDLERS: IFilterHANDLERS = {
     userNames: changeAlbumsUserNamesFilter,
     favorite: changeAlbumsFilter,
     title: changeAlbumsFilter,
+  },
+  tasks: {
+    perPage: setTasksPerPage,
+    sort: changeTasksSortType,
   },
 };

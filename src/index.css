@@ -40,8 +40,22 @@ code {
       opacity: 1;
     }
   }
+
+  @keyframes slideInFromBottom {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   
 .post {
-  
   animation: 0.2s ease-out 0s 1 slideInFromLeft;
-  }
+}
+
+.task {
+  animation: 0.5s ease-out 0s 1 slideInFromBottom;
+}

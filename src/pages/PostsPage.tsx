@@ -5,50 +5,41 @@ import { AppDispatch } from '../store';
 import { selectPosts } from '../store/posts/selectors';
 import { selectUsers } from '../store/users/selectors';
 import { getPosts } from '../store/posts/actions';
-import { deletePost, editPost, filterPosts, sortPosts } from '../store/posts/reducer';
+import { deletePost, editPost } from '../store/posts/reducer';
 
 import { Page } from './Page';
 import { Post } from '../components/Post';
-import { PerPageSelect } from '../components/PerPageSelect';
+import { PerPageSelect } from '../components/Filters/PerPageSelect';
 import { UserFilter } from '../components/Filters/UserFilter';
 import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
 import { TitleSearch } from '../components/Filters/TitleSearch';
 import { Btn } from '../components/Btn';
 import { AddPostForm } from '../components/AddPostForm';
-import { ConfirmDialog } from '../components/ConfirmDialog';
 import { Pagination } from '../components/Pagination';
 import { Sort } from '../components/Filters/Sort';
+import { Filters } from '../components/Filters';
+import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+import { useItemsPerPage } from '../utils/hooks';
+import { IItem } from '../utils/types';
+import { updateDisplayItems } from '../utils/helpers';
 
 export const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { data, perPage, display, filter, sort } = useSelector(selectPosts);
+  const { data, perPage, sort, filter } = useSelector(selectPosts);
+  const display = updateDisplayItems({ data, sort, ...filter, page: 'posts' });
   const { data: users } = useSelector(selectUsers);
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Array<number>>([]);
-  const [confirmDialogDel, setConfirmDialogDel] = useState(false);
-  const [confirmDialogFav, setConfirmDialogFav] = useState(false);
+  const clearSelected = () => setSelected([]);
 
-  const [isAddForm, setIsAddForm] = useState(false);
+  const [isAddPost, setIsAddPost] = useState(false);
 
   useEffect(() => {
     if (!data.length) dispatch(getPosts(users));
   }, [users]);
 
-  // filter posts
-  useEffect(() => {
-    dispatch(filterPosts());
-  }, [filter, data]);
-
-  // sort posts
-  useEffect(() => {
-    dispatch(sortPosts());
-  }, [sort, filter, data]);
-
   // display posts depending on page settings
-  let itemsPerPage = display;
-  if (perPage !== 'all') {
-    itemsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
-  }
+  const itemsPerPage: Array<IItem> = useItemsPerPage(display, perPage, page);
 
   const items = itemsPerPage.map((post) => {
     const handleSelectItem = (checked: boolean) => {
@@ -61,69 +52,45 @@ export const PostsPage = () => {
     return <Post key={post.id} id={post.id} handleSelect={handleSelectItem} />;
   });
 
-  // multiple actions
-  const multipleDeleting = () => {
-    selected.forEach((id) => {
-      dispatch(deletePost(id));
-    });
-    setConfirmDialogDel(false);
-    setSelected([]);
+  const itemHandlers = {
+    delete: deletePost,
+    edit: editPost,
   };
 
-  const multipleAddingToFav = () => {
-    selected.forEach((id) => {
-      const newItem = data.filter((post) => post.id === id)[0];
-      dispatch(editPost({ ...newItem, favorite: true }));
-    });
-    setConfirmDialogFav(false);
-    setSelected([]);
+  const handleAdding = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsAddPost(true);
   };
 
   return (
     <Page title="Posts">
-      {/* FILTERS */}
-      <form className="flex rounded-md bg-gray-900 bg-opacity-40 text-gray-400 px-4 py-2">
-        <legend className="visually-hidden text-lg">Filters:</legend>
-        <fieldset className="flex flex-wrap py-1 w-full justify-between child:m-2">
-          <TitleSearch />
-          <UserFilter />
-          <Sort />
-          <FavoriteFilter />
-          <PerPageSelect />
-          <Btn text="Add post" handler={() => setIsAddForm(true)} isActive />
-        </fieldset>
-      </form>
+      <Filters>
+        <TitleSearch />
+        <UserFilter />
+        <Sort />
+        <FavoriteFilter />
+        <PerPageSelect />
+        <Btn text="Add post" handler={handleAdding} isActive />
+      </Filters>
 
       {/* POSTS */}
       <section>
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 mt-5">{items}</ul>
 
-        <Pagination currentP={page} perPage={+perPage} length={display.length} setPage={setPage} />
+        <Pagination currentP={page} perPage={perPage} length={display.length} setPage={setPage} />
       </section>
 
       {/* MODALS */}
-      {isAddForm && <AddPostForm close={() => setIsAddForm(false)} />}
-      {selected.length > 0 && (
-        <div className="bar fixed bottom-2 right-2 rounded-md min-w-[40%] flex justify-between items-center bg-gray-700 border-2 border-teal-400 shadow-2xl p-3 m-auto child:mx-2">
-          <p>For all checked items:</p>
-          <Btn text="Add to favorite" handler={() => setConfirmDialogFav(true)} />
-          <Btn text="Delete" handler={() => setConfirmDialogDel(true)} />
-        </div>
-      )}
-      {confirmDialogDel && (
-        <ConfirmDialog
-          text="Delete posts?"
-          close={() => setConfirmDialogDel(false)}
-          confirm={multipleDeleting}
-        />
-      )}
-      {confirmDialogFav && (
-        <ConfirmDialog
-          text="Add posts to favorite?"
-          close={() => setConfirmDialogFav(false)}
-          confirm={multipleAddingToFav}
-        />
-      )}
+      {isAddPost && <AddPostForm close={() => setIsAddPost(false)} />}
+
+      <MultipleSelectionBar
+        isActive={selected.length > 0}
+        hasDel
+        hasFav
+        handlers={itemHandlers}
+        selectedItems={selected}
+        clearSelected={clearSelected}
+      />
     </Page>
   );
 };

@@ -2,7 +2,7 @@ import cn from 'classnames';
 
 type BtnProps = {
   text: string,
-  handler?: () => void,
+  handler?: (e: React.MouseEvent) => void,
   type?: 'button' | 'submit' | 'reset',
   isActive?: boolean,
 };

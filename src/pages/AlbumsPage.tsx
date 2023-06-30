@@ -7,128 +7,72 @@ import { selectAlbums } from '../store/albums/selectors';
 import { selectUsers } from '../store/users/selectors';
 import { Album } from '../components/Album';
 import { Pagination } from '../components/Pagination';
-import { ConfirmDialog } from '../components/ConfirmDialog';
-import {
-  changeAlbumsSortType,
-  deleteAlbum,
-  editAlbum,
-  filterAlbums,
-  sortAlbums,
-} from '../store/albums/reducer';
-import { Btn } from '../components/Btn';
+import { deleteAlbum, editAlbum } from '../store/albums/reducer';
 import { TitleSearch } from '../components/Filters/TitleSearch';
 import { UserFilter } from '../components/Filters/UserFilter';
-import { Select } from '../components/Select';
 import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
-import { PerPageSelect } from '../components/PerPageSelect';
-import { SORT_OPTIONS } from '../utils';
+import { PerPageSelect } from '../components/Filters/PerPageSelect';
+import { Sort } from '../components/Filters/Sort';
+import { Filters } from '../components/Filters';
+import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+import { useItemsPerPage } from '../utils/hooks';
+import { IItem } from '../utils/types';
+import { updateDisplayItems } from '../utils/helpers';
 
 export const AlbumsPage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { data, perPage, display, filter, sort } = useSelector(selectAlbums);
+  const { data, sort, perPage, filter } = useSelector(selectAlbums);
   const { data: users } = useSelector(selectUsers);
+
+  const display = updateDisplayItems({ data, sort, ...filter, page: 'albums' });
+
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Array<number>>([]);
-  const [confirmDialogDel, setConfirmDialogDel] = useState(false);
-  const [confirmDialogFav, setConfirmDialogFav] = useState(false);
+  const clearSelected = () => setSelected([]);
 
   useEffect(() => {
     if (!data.length) dispatch(getAlbums(users));
   }, [users]);
 
-  // filter posts
-  useEffect(() => {
-    dispatch(filterAlbums());
-  }, [filter, data]);
+  // display items depending on page settings
+  const itemsPerPage: Array<IItem> = useItemsPerPage(display, perPage, page);
 
-  // sort posts
-  useEffect(() => {
-    dispatch(sortAlbums());
-  }, [sort, filter, data]);
-
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeAlbumsSortType(e.target.value));
-  };
-
-  const sortOptions = SORT_OPTIONS.map((opt) => (
-    <option key={opt.name} value={String(opt.name)}>
-      {opt.name}
-    </option>
-  ));
-
-  // display posts depending on page settings
-  let itemsPerPage = display;
-  if (perPage !== 'all') {
-    itemsPerPage = display.slice(page * +perPage, +perPage * (page + 1));
-  }
-  const items = itemsPerPage.map((post) => {
+  const items = itemsPerPage.map((item) => {
     const handleSelectItem = (checked: boolean) => {
       if (checked) {
-        setSelected([...selected, post.id]);
+        setSelected([...selected, item.id]);
       } else {
-        setSelected(selected.filter((n) => n !== post.id));
+        setSelected(selected.filter((n) => n !== item.id));
       }
     };
-    return <Album key={post.id} id={post.id} handleSelect={handleSelectItem} />;
+    return <Album key={item.id} id={item.id} handleSelect={handleSelectItem} />;
   });
-
-  // multiple actions
-  const multipleDeleting = () => {
-    selected.forEach((id) => {
-      dispatch(deleteAlbum(id));
-    });
-    setConfirmDialogDel(false);
-    setSelected([]);
-  };
-
-  const multipleAddingToFav = () => {
-    selected.forEach((id) => {
-      const newItem = data.filter((post) => post.id === id)[0];
-      dispatch(editAlbum({ ...newItem, favorite: true }));
-    });
-    setConfirmDialogFav(false);
-    setSelected([]);
+  const itemHandlers = {
+    delete: deleteAlbum,
+    edit: editAlbum,
   };
 
   return (
     <Page title="Photos">
-      {/* FILTERS */}
-      <form className="flex rounded-md bg-gray-900 bg-opacity-40 text-gray-400 px-4 py-2">
-        <legend className="visually-hidden text-lg">Filters:</legend>
-        <fieldset className="flex flex-wrap py-1 w-full justify-between child:m-2">
-          <TitleSearch />
-          <UserFilter />
-          <Select handler={handleSortChange} value={sort} label="Sort by:" options={sortOptions} />
-          <FavoriteFilter />
-          <PerPageSelect />
-        </fieldset>
-      </form>
+      <Filters>
+        <TitleSearch />
+        <UserFilter />
+        <Sort />
+        <FavoriteFilter />
+        <PerPageSelect />
+      </Filters>
       {/* ALBUMS */}
       <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">{items}</ul>
-      <Pagination currentP={page} perPage={+perPage} length={display.length} setPage={setPage} />
+      <Pagination currentP={page} perPage={perPage} length={display.length} setPage={setPage} />
 
-      {/* MODALS */}
-      {selected.length > 0 && (
-        <div className="bar fixed bottom-2 right-2 rounded-md min-w-[40%] flex justify-between items-center bg-gray-700 border-2 border-teal-400 shadow-2xl p-3 m-auto child:mx-2">
-          <p>For all checked items:</p>
-          <Btn text="Add to favorite" handler={() => setConfirmDialogFav(true)} />
-          <Btn text="Delete" handler={() => setConfirmDialogDel(true)} />
-        </div>
-      )}
-      {confirmDialogDel && (
-        <ConfirmDialog
-          text="Delete posts?"
-          close={() => setConfirmDialogDel(false)}
-          confirm={multipleDeleting}
-        />
-      )}
-      {confirmDialogFav && (
-        <ConfirmDialog
-          text="Add posts to favorite?"
-          close={() => setConfirmDialogFav(false)}
-          confirm={multipleAddingToFav}
-        />
-      )}
+      <MultipleSelectionBar
+        isActive={selected.length > 0}
+        hasDel
+        hasFav
+        handlers={itemHandlers}
+        selectedItems={selected}
+        clearSelected={clearSelected}
+      />
     </Page>
   );
 };

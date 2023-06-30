@@ -1,20 +1,42 @@
 import { Draft } from '@reduxjs/toolkit';
-import { IAlbum, IItem, IItemsState, IPost } from './types';
+import { IAlbum, IItem, IItemsState, IPost, ISameItems, ISameItemsState, ITask } from './types';
 import { SORT_OPTIONS } from '.';
+
+type TasksUpdArg = {
+	data: ITask[],
+	sort: string,
+};
+export function updateDisplayTasks({data, sort}: TasksUpdArg){
+	const sortCb = SORT_OPTIONS.tasks.filter((opt) => opt.name == sort)[0].cb;
+	return  [...data].sort(sortCb);
+}
+
+type ItemsUpdArg = {
+	data: ISameItems[],
+	sort: string,
+	userNames: Array<string>,
+	page: "posts" | "albums",
+	title: string,
+	favorite: boolean,
+};
+export function updateDisplayItems({data, sort, userNames, favorite, title,page}: ItemsUpdArg ){
+	const filtered = data.filter(p =>  userNames.includes('all') ? true : userNames.includes(p.userName)).filter(p => title ? p.title.includes(title) : true).filter(p => favorite ? p.favorite : true);
+
+	const sortCb = SORT_OPTIONS[page].filter((opt) => opt.name == sort)[0].cb;
+
+	return  filtered.sort(sortCb);
+}
+
 
 export function editItem(state: Draft<IItemsState>, { payload }:
 	{
-		payload: IItem;
+		payload: Partial<IItem>;
 		type: string;
 	}){
 		const newData = [...state.data];
 		const iData = newData.findIndex((p) => p.id === payload.id);
 		newData[iData] = { ...newData[iData], ...payload };
 		state.data = newData;
-		const newDisplay = [...state.data];
-		const iDisplay = newDisplay.findIndex((p) => p.id === payload.id);
-		newDisplay[iDisplay] = { ...newDisplay[iDisplay], ...payload };
-		state.display = newDisplay;
 }
 
 export function deleteItem (state: Draft<IItemsState>, { payload }:
@@ -23,7 +45,6 @@ export function deleteItem (state: Draft<IItemsState>, { payload }:
 		type: string;
 	}) {
 	state.data = state.data.filter((post) => post.id !== payload);
-	state.display = state.display.filter((post) => post.id !== payload);
 }
 
 export function setPerPage (state: Draft<IItemsState>, { payload }:
@@ -34,7 +55,7 @@ export function setPerPage (state: Draft<IItemsState>, { payload }:
 	state.perPage = payload;
 }
 
-export function changeUserFilter(state: Draft<IItemsState>, { payload }:
+export function changeUserFilter(state: Draft<ISameItemsState>, { payload }:
 	{
 		payload: Array<string>;
 		type: string;
@@ -45,7 +66,7 @@ export function changeUserFilter(state: Draft<IItemsState>, { payload }:
 	};
 }
 
-export function changeSingleFilter(state: Draft<IItemsState>, { payload }:
+export function changeSingleFilter(state: Draft<ISameItemsState>, { payload }:
 	{
 		// eslint-disable-next-line prettier/prettier
 		payload: { value: string | boolean, prop: keyof IPost | keyof IAlbum};
@@ -59,9 +80,6 @@ export function changeSingleFilter(state: Draft<IItemsState>, { payload }:
 	};
 }
 
-export function filter (state: Draft<IItemsState>) {
-	state.display = state.data.filter(p =>  state.filter.userNames.includes('all') ? true : state.filter.userNames.includes(p.userName)).filter(p => state.filter.title ? p.title.includes(state.filter.title) : true).filter(p => state.filter.favorite ? p.favorite : true);
-}
 
 export function changeSort (state: Draft<IItemsState>, { payload }:
 	{
@@ -71,7 +89,3 @@ export function changeSort (state: Draft<IItemsState>, { payload }:
 	state.sort = payload;
 }
 
-export function sort(state: Draft<IItemsState>)  {
-	const sortCb = SORT_OPTIONS.filter((opt) => opt.name == state.sort)[0].cb;
-	state.display = [...state.display].sort(sortCb);
-}

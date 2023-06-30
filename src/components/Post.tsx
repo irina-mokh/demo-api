@@ -12,6 +12,8 @@ import { Comment } from './Comment';
 import { ConfirmDialog } from './ConfirmDialog';
 
 import { IComment } from '../utils/types';
+import { EditBtns } from './EditBtns';
+import { CheckboxForMultiple } from './CheckboxForMultiple';
 
 type PostProps = {
   id: number,
@@ -59,24 +61,6 @@ export const Post = ({ id, handleSelect }: PostProps) => {
     dispatch(editPost({ ...post, favorite: !post.favorite }));
   };
 
-  const onEditBtn = () => {
-    setIsEditable(!isEditable);
-  };
-
-  const onSaveBtn = () => {
-    dispatch(
-      editPost({
-        ...postEdit,
-      })
-    );
-    setIsEditable(false);
-  };
-
-  const onCancelBtn = () => {
-    setPostEdit(post);
-    setIsEditable(false);
-  };
-
   const onDeleteBtn = () => {
     dispatch(deletePost(id));
   };
@@ -121,17 +105,16 @@ export const Post = ({ id, handleSelect }: PostProps) => {
           />
         </section>
 
-        {/* buttons for edit mode */}
-        {isEditable && (
-          <div className="absolute left-2 bottom-4 flex">
-            <IconBtn type="check" handler={onSaveBtn} />
-            <IconBtn type="cancel" handler={onCancelBtn} />
-          </div>
-        )}
-
         {/* post buttons */}
         <div className="controls flex justify-end mx-2 my-1">
-          <IconBtn type="edit" isActive={isEditable} handler={onEditBtn} />
+          <EditBtns
+            isEditable={isEditable}
+            setIsEditable={setIsEditable}
+            handler={editPost}
+            current={postEdit}
+            setCurrent={setPostEdit}
+            initial={post}
+          />
           <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
           <IconBtn type="delete" handler={() => setIsDialog(true)} />
           <IconBtn type="comments" isActive={showComments} handler={onCommentBtn} />
@@ -146,15 +129,7 @@ export const Post = ({ id, handleSelect }: PostProps) => {
           </>
         )}
       </section>
-      {/* selection checkbox */}
-      <input
-        type="checkbox"
-        defaultChecked={false}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          handleSelect(e.target.checked);
-        }}
-        className="absolute top-2 right-2 bg-transparent border-gray-100 accent-teal-500 w-4 h-4"
-      ></input>
+      <CheckboxForMultiple handleSelect={handleSelect} />
       {isDialog && (
         <ConfirmDialog
           close={closeConfirmModal}

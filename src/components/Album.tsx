@@ -7,6 +7,8 @@ import { ConfirmDialog } from './ConfirmDialog';
 import { AppDispatch } from '../store';
 import { deleteAlbum, editAlbum } from '../store/albums/reducer';
 import { Link } from 'react-router-dom';
+import { EditBtns } from './EditBtns';
+import { CheckboxForMultiple } from './CheckboxForMultiple';
 
 type AlbumProps = {
   id: number,
@@ -30,24 +32,6 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
   // buttons' handlers
   const onFavBtn = () => {
     dispatch(editAlbum({ ...album, favorite: !album.favorite }));
-  };
-
-  const onEditBtn = () => {
-    setIsEditable(!isEditable);
-  };
-
-  const onSaveBtn = () => {
-    dispatch(
-      editAlbum({
-        ...albumEdit,
-      })
-    );
-    setIsEditable(false);
-  };
-
-  const onCancelBtn = () => {
-    setAlbumEdit(album);
-    setIsEditable(false);
   };
 
   const onDeleteBtn = () => {
@@ -84,29 +68,20 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
         Photos {'>'}
       </Link>
 
-      {/* buttons for edit mode */}
-      {isEditable && (
-        <div className="absolute left-2 bottom-4 flex">
-          <IconBtn type="check" handler={onSaveBtn} />
-          <IconBtn type="cancel" handler={onCancelBtn} />
-        </div>
-      )}
-
       {/* album buttons */}
       <div className="controls flex justify-end mx-2 my-1">
-        <IconBtn type="edit" isActive={isEditable} handler={onEditBtn} />
+        <EditBtns
+          isEditable={isEditable}
+          setIsEditable={setIsEditable}
+          handler={editAlbum}
+          current={albumEdit}
+          setCurrent={setAlbumEdit}
+          initial={album}
+        />
         <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
         <IconBtn type="delete" handler={() => setIsDialog(true)} />
       </div>
-      {/* selection checkbox */}
-      <input
-        type="checkbox"
-        defaultChecked={false}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          handleSelect(e.target.checked);
-        }}
-        className="absolute top-2 right-2 bg-transparent border-gray-100 accent-teal-500 w-4 h-4"
-      ></input>
+      <CheckboxForMultiple handleSelect={handleSelect} />
       {isDialog && (
         <ConfirmDialog
           close={closeConfirmModal}
