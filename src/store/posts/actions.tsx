@@ -29,8 +29,7 @@ export const addPost = createAsyncThunk(
   'posts/addPost',
   async function (post: IPost, { rejectWithValue }) {
     try {
-      const response = await api.post(`posts`, post);
-      console.log(response.data);
+      await api.post(`posts`, post);
       return post;
     } catch (err) {
       // eslint-disable-next-line prettier/prettier
