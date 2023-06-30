@@ -5,17 +5,14 @@ import { AppDispatch, HANDLERS } from '../../store';
 import { selectUsers } from '../../store/users/selectors';
 
 import { IconBtn } from '../IconBtn';
-import { useLocation } from 'react-router-dom';
-import { Pages } from '../../utils/types';
+import { useLS, usePage } from '../../utils/hooks';
 
 export const UserFilter = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data: users } = useSelector(selectUsers);
-  // eslint-disable-next-line prettier/prettier
-  const page = useLocation().pathname.slice(1) as Pages;
+  const page = usePage();
 
-  const ls = localStorage.getItem('reduxState');
-  const values =  ls ? JSON.parse(ls)[page].filter.userNames : [];
+  const values = useLS(page).filter.userNames;
   const handler = HANDLERS[page].userNames;
 
   const [isList, setIsList] = useState(false);
@@ -72,7 +69,7 @@ export const UserFilter = () => {
     <div className="user-select relative">
       <legend>By users:</legend>
       <p
-        className="border-2 rounded-md p-1 max-w-[250px] min-w-[200px] h-[35px] overflow-hidden ml-auto flex justify-between items-center"
+        className="border-2 rounded-md p-1 max-w-[250px] min-w-[220px] h-[35px] overflow-hidden ml-auto flex justify-between items-center"
         onClick={() => {
           setIsList(!isList);
         }}

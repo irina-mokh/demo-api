@@ -19,6 +19,7 @@ import { Pagination } from '../components/Pagination';
 import { Sort } from '../components/Filters/Sort';
 import { Filters } from '../components/Filters';
 import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+
 import { useItemsPerPage } from '../utils/hooks';
 import { IItem } from '../utils/types';
 import { updateDisplayItems } from '../utils/helpers';

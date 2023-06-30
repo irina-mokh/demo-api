@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch } from '../store';
 import { getTasks } from '../store/tasks/actions';
 import { Page } from './Page';
 import { selectTasks } from '../store/tasks/selectors';
 import { deleteTask, editTask } from '../store/tasks/reducer';
+
 import { Task } from '../components/Task';
 import { PerPageSelect } from '../components/Filters/PerPageSelect';
 import { Sort } from '../components/Filters/Sort';
 import { Filters } from '../components/Filters';
 import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
-import { useItemsPerPage } from '../utils/hooks';
-import { IItem } from '../utils/types';
 import { Pagination } from '../components/Pagination';
 import { AddTaskForm } from '../components/AddTaskForm';
 import { Btn } from '../components/Btn';
+
+import { useItemsPerPage } from '../utils/hooks';
+import { IItem } from '../utils/types';
 import { updateDisplayTasks } from '../utils/helpers';
 
 export const TasksPage = () => {

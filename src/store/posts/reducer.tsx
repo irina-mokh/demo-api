@@ -19,6 +19,7 @@ const initialState: IPostsState = {
     favorite: false,
   },
   sort: 'ID',
+  error: null,
 };
 
 export const postsSlice = createSlice({
@@ -36,26 +37,25 @@ export const postsSlice = createSlice({
     builder
       // getPosts
       .addCase(getPosts.pending, (state) => {
-        // state.error = null;
+        state.error = null;
       })
       .addCase(getPosts.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.data = [...payload];
       })
       .addCase(getPosts.rejected, (state, { payload }) => {
-        // state.error = String(payload);
+        state.error = String(payload);
       })
       // addPost
       .addCase(addPost.pending, (state) => {
-        // state.error = null;
+        state.error = null;
       })
       .addCase(addPost.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.data = [...state.data, payload];
-        // state.display = [...state.data, payload];
       })
       .addCase(addPost.rejected, (state, { payload }) => {
-        // state.error = String(payload);
+        state.error = String(payload);
       });
   },
 });

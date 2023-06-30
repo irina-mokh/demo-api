@@ -7,6 +7,7 @@ const initialState: ITasksState = {
   data: [],
   perPage: '10',
   sort: 'done last',
+  error: null,
 };
 
 export const tasksSlice = createSlice({
@@ -21,28 +22,26 @@ export const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // getTasks
-      .addCase(getTasks.pending, () => {
-        // state.error = null;
+      .addCase(getTasks.pending, (state) => {
+        state.error = null;
       })
       .addCase(getTasks.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.data = [...payload];
-        // state.display = [...payload];
       })
-      .addCase(getTasks.rejected, () => {
-        // state.error = String(payload);
+      .addCase(getTasks.rejected, (state, { payload }) => {
+        state.error = String(payload);
       })
       // addTask
-      .addCase(addTask.pending, () => {
-        // state.error = null;
+      .addCase(addTask.pending, (state) => {
+        state.error = null;
       })
       .addCase(addTask.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.data = [...state.data, payload];
-        // state.display = [...state.data, payload];
       })
-      .addCase(addTask.rejected, () => {
-        // state.error = String(payload);
+      .addCase(addTask.rejected, (state, { payload }) => {
+        state.error = String(payload);
       });
   },
 });

@@ -1,9 +1,11 @@
-import cn from 'classnames';
-import { selectTasks } from '../store/tasks/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
+import cn from 'classnames';
+
+import { selectTasks } from '../store/tasks/selectors';
 import { deleteTask, editTask } from '../store/tasks/reducer';
 import { AppDispatch } from '../store';
+
 import { IconBtn } from './IconBtn';
 import { ConfirmDialog } from './ConfirmDialog';
 import { EditBtns } from './EditBtns';
@@ -58,17 +60,24 @@ export const Task = ({ id, handleSelect }: ITaskProps) => {
       true,
     'line-through text-gray-400': completed,
   });
+
+  const inputCl = cn({
+    'bg-transparent w-full border-2 p-1 rounded-md': true,
+    'border-transparent': !isEditable,
+    'border-gray-400': isEditable,
+  });
+
   return (
     <li className={taskClasses}>
       <input
         type="checkbox"
         checked={completed}
         onChange={toggleTaskStatus}
-        className="w-8 h-8 bg-transparent mr-3 accent-teal-500"
+        className="w-8 h-8 mr-3 accent-teal-500"
       />
       <input
         disabled={!isEditable}
-        className="w-full bg-transparent text-lg"
+        className={inputCl + ' text-lg'}
         value={taskEdit.title}
         onChange={(e) => handleTextChange(e, 'title')}
       />

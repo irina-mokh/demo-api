@@ -20,6 +20,7 @@ const initialState: IAlbumsState = {
     title: '',
     favorite: false,
   },
+  error: null,
 };
 
 export const albumsSlice = createSlice({
@@ -36,26 +37,26 @@ export const albumsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // getPosts
-      .addCase(getAlbums.pending, () => {
-        // state.error = null;
+      .addCase(getAlbums.pending, (state) => {
+        state.error = null;
       })
       .addCase(getAlbums.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.data = [...payload];
       })
-      .addCase(getAlbums.rejected, () => {
-        // state.error = String(payload);
+      .addCase(getAlbums.rejected, (state, { payload }) => {
+        state.error = String(payload);
       })
       // getPhotos
-      .addCase(getPhotos.pending, () => {
-        // state.error = null;
+      .addCase(getPhotos.pending, (state) => {
+        state.error = null;
       })
       .addCase(getPhotos.fulfilled, (state, { payload }) => {
-        // state.error = null;
+        state.error = null;
         state.photos = [...payload];
       })
-      .addCase(getPhotos.rejected, () => {
-        // state.error = String(payload);
+      .addCase(getPhotos.rejected, (state, { payload }) => {
+        state.error = String(payload);
       });
   },
 });

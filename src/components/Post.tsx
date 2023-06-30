@@ -10,10 +10,10 @@ import { selectPosts } from '../store/posts/selectors';
 import { IconBtn } from './IconBtn';
 import { Comment } from './Comment';
 import { ConfirmDialog } from './ConfirmDialog';
-
-import { IComment } from '../utils/types';
 import { EditBtns } from './EditBtns';
 import { CheckboxForMultiple } from './CheckboxForMultiple';
+
+import { IComment } from '../utils/types';
 
 type PostProps = {
   id: number,
@@ -81,25 +81,31 @@ export const Post = ({ id, handleSelect }: PostProps) => {
     'md:col-span-2': showComments,
   });
 
+  const inputCl = cn({
+    'bg-transparent w-full border-2 p-1 rounded-md': true,
+    'border-transparent': !isEditable,
+    'border-gray-400': isEditable,
+  });
+
   return (
     <li className={postClasses}>
       <article className="content flex flex-col justify-between h-full">
         <section className="mr-5">
           <textarea
             disabled={!isEditable}
-            className="w-full h-18 resize-none bg-transparent font-bold text-xl"
+            className={inputCl + ' h-18 resize-none font-bold text-xl'}
             value={postEdit.title}
             onChange={(e) => handleTextChange(e, 'title')}
           />
           <input
             disabled={!isEditable}
-            className="w-full bg-transparent text-teal-400 text-sm"
+            className={inputCl + ' text-teal-400 text-sm'}
             value={postEdit.userName}
             onChange={(e) => handleTextChange(e, 'userName')}
           />
           <textarea
             disabled={!isEditable}
-            className=" w-full h-24 resize-none my-2 bg-transparent  text-gray-200 text-sm"
+            className={inputCl + ' h-24 resize-none my-2 text-gray-200 text-sm'}
             onChange={(e) => handleTextChange(e, 'body')}
             value={postEdit.body}
           />

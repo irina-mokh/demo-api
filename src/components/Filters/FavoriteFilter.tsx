@@ -1,16 +1,12 @@
 import { useDispatch } from 'react-redux';
 
 import { AppDispatch, HANDLERS } from '../../store';
-import { Pages } from '../../utils/types';
-import { useLocation } from 'react-router-dom';
+import { useLS, usePage } from '../../utils/hooks';
 
 export const FavoriteFilter = () => {
   const dispatch: AppDispatch = useDispatch();
-  // eslint-disable-next-line prettier/prettier
-  const page = useLocation().pathname.slice(1) as Pages;
-
-  const ls = localStorage.getItem('reduxState');
-  const value = ls ? JSON.parse(ls)[page].filter.favorite : '';
+  const page = usePage();
+  const value = useLS(page).filter.favorite;
   const handler = HANDLERS[page].favorite;
 
   const handleFilterByFavorite = (e: React.ChangeEvent<HTMLInputElement>) => {

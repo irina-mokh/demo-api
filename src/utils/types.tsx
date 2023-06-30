@@ -51,6 +51,7 @@ export interface ITask {
 export interface IBaseFilter {
   perPage: string;
   sort: string;
+  error: string | null,
 }
 
 export interface IExtraFilter extends IBaseFilter {

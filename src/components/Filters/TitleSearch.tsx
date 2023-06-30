@@ -1,18 +1,13 @@
 import { useDispatch } from 'react-redux';
 
 import { AppDispatch, HANDLERS } from '../../store';
-import { useLocation } from 'react-router-dom';
-import { Pages } from '../../utils/types';
+import { useLS, usePage } from '../../utils/hooks';
 
 export const TitleSearch = () => {
   const dispatch: AppDispatch = useDispatch();
-  // eslint-disable-next-line prettier/prettier
-  const page = useLocation().pathname.slice(1) as Pages;
-
-  const ls = localStorage.getItem('reduxState');
-  const value =  ls ? JSON.parse(ls)[page].filter.title : '';
+  const page = usePage();
+  const value = useLS(page).filter.title;
   const handler = HANDLERS[page].title;
-
 
   const handleTitleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(handler({ prop: 'title', value: e.target.value }));

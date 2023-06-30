@@ -2,12 +2,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../store';
 import { Page } from './Page';
 import { useEffect, useState } from 'react';
+
 import { getAlbums } from '../store/albums/actions';
 import { selectAlbums } from '../store/albums/selectors';
 import { selectUsers } from '../store/users/selectors';
+import { deleteAlbum, editAlbum } from '../store/albums/reducer';
+
 import { Album } from '../components/Album';
 import { Pagination } from '../components/Pagination';
-import { deleteAlbum, editAlbum } from '../store/albums/reducer';
 import { TitleSearch } from '../components/Filters/TitleSearch';
 import { UserFilter } from '../components/Filters/UserFilter';
 import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
@@ -15,6 +17,7 @@ import { PerPageSelect } from '../components/Filters/PerPageSelect';
 import { Sort } from '../components/Filters/Sort';
 import { Filters } from '../components/Filters';
 import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+
 import { useItemsPerPage } from '../utils/hooks';
 import { IItem } from '../utils/types';
 import { updateDisplayItems } from '../utils/helpers';
@@ -62,7 +65,7 @@ export const AlbumsPage = () => {
         <PerPageSelect />
       </Filters>
       {/* ALBUMS */}
-      <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">{items}</ul>
+      <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">{items}</ul>
       <Pagination currentP={page} perPage={perPage} length={display.length} setPage={setPage} />
 
       <MultipleSelectionBar

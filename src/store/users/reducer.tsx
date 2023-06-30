@@ -12,7 +12,7 @@ export const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // getPosts
+      // getUsers
       .addCase(getUsers.pending, () => {
         // state.error = null;
       })

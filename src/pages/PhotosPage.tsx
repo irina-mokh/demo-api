@@ -1,10 +1,12 @@
-import { useParams } from 'react-router-dom';
-import { Page } from './Page';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { AppDispatch } from '../store';
 import { getPhotos } from '../store/albums/actions';
 import { selectAlbums } from '../store/albums/selectors';
+
+import { Page } from './Page';
 import { Photo } from '../components/Photo';
 
 export const PhotosPage = () => {
@@ -16,7 +18,7 @@ export const PhotosPage = () => {
     dispatch(getPhotos(+id));
   });
 
-  const thumbs = photos.map((photo) => <Photo {...photo} />);
+  const thumbs = photos.map((photo) => <Photo key={photo.id} {...photo} />);
   return (
     <Page title="Album">
       <section>

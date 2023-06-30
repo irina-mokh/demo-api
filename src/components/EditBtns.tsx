@@ -34,7 +34,6 @@ export const EditBtns = ({
   };
 
   const onEditBtn = () => {
-    // TODO: check if saved
     setIsEditable(!isEditable);
   };
 

@@ -41,7 +41,6 @@ export const MultipleSelectionBar = ({
 
   const multipleAddingToFav = () => {
     selectedItems.forEach((id) => {
-      // const newItem = data.filter((post) => post.id === id)[0];
       dispatch(handlers.edit({ id: id, favorite: true }));
     });
     setConfirmDialogFav(false);

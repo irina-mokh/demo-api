@@ -22,6 +22,7 @@ export const addTask = createAsyncThunk(
   async function (task: ITask, { rejectWithValue }) {
     try {
       const response = await api.post(`todos`, task);
+      // console.log(response);
       return task;
     } catch (err) {
       // eslint-disable-next-line prettier/prettier

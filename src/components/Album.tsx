@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
+
 import { selectAlbums } from '../store/albums/selectors';
-import { IconBtn } from './IconBtn';
-import { ConfirmDialog } from './ConfirmDialog';
 import { AppDispatch } from '../store';
 import { deleteAlbum, editAlbum } from '../store/albums/reducer';
-import { Link } from 'react-router-dom';
+
+import { IconBtn } from './IconBtn';
+import { ConfirmDialog } from './ConfirmDialog';
 import { EditBtns } from './EditBtns';
 import { CheckboxForMultiple } from './CheckboxForMultiple';
 
@@ -49,17 +51,23 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
     setAlbumEdit({ ...albumEdit, [prop]: e.target.value });
   };
 
+  const inputCl = cn({
+    'bg-transparent w-full border-2 p-1 rounded-md': true,
+    'border-transparent': !isEditable,
+    'border-gray-400': isEditable,
+  });
+
   return (
-    <li className="album relative flex flex-col justify-between bg-slate-700 pl-4 pr-5 pt-4 pb-0 rounded-md mx-1">
+    <li className="album relative flex flex-col justify-between bg-slate-700 pl-4 pr-7 pt-4 pb-0 rounded-md mx-1">
       <textarea
         disabled={!isEditable}
-        className="w-full h-24 resize-none bg-transparent font-bold text-xl"
+        className={inputCl + ' h-24 resize-none font-bold text-xl'}
         value={albumEdit.title}
         onChange={(e) => handleTextChange(e, 'title')}
       />
       <input
         disabled={!isEditable}
-        className="w-full bg-transparent text-teal-400 text-sm"
+        className={inputCl + ' text-teal-400 text-sm mt-2'}
         value={albumEdit.userName}
         onChange={(e) => handleTextChange(e, 'userName')}
       />
