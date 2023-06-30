@@ -10,8 +10,8 @@ type ModalProps = {
 };
 
 export const Modal = ({ close, children, title }: ModalProps) => {
-  const closeModal = () => {
-    // e.stopPropagation();
+  const closeModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
     close();
   };
 
@@ -26,7 +26,8 @@ export const Modal = ({ close, children, title }: ModalProps) => {
   }, []);
 
   const modalContent = (
-    <div className="overlay fixed top-0 left-0 flex justify-center items-center w-screen h-screen bg-slate-300 bg-opacity-20 z-10 text-gray-50" onClick={closeModal}>
+    <div className="overlay fixed top-0 left-0 flex justify-center items-center w-screen h-screen bg-slate-300 bg-opacity-20 z-10 text-gray-50" onClick={
+      closeModal}>
       <div className="popup bg-slate-700 min-w-[30%]" onClick={(e) => e.stopPropagation()}>
         <header className="popup__header flex justify-between items-center pl-5 py-2 font-bold bg-slate-800">
           {title && <h2>{title}</h2>}

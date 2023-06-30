@@ -32,6 +32,14 @@ export interface IAlbum {
   body: string;
 }
 
+export interface IPhoto {
+  id: number,
+  albumId: number,
+  thumbnailUrl: string,
+  title: string,
+  url: string,
+}
+
 export interface ITask {
   id: number;
 }
@@ -57,6 +65,7 @@ export interface IPostsState extends IFilter {
 export interface IAlbumsState extends IFilter {
   data: Array<IAlbum>;
   display: Array<IAlbum>;
+  photos: Array<IPhoto>
 }
 export interface ITasksState extends IFilter {
   data: Array<ITask>;

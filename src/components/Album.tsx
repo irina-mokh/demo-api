@@ -6,6 +6,7 @@ import { IconBtn } from './IconBtn';
 import { ConfirmDialog } from './ConfirmDialog';
 import { AppDispatch } from '../store';
 import { deleteAlbum, editAlbum } from '../store/albums/reducer';
+import { Link } from 'react-router-dom';
 
 type AlbumProps = {
   id: number,
@@ -65,10 +66,10 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
   };
 
   return (
-    <li className="album relative flex flex-col justify-between bg-slate-700 p-4 rounded-md mx-1">
+    <li className="album relative flex flex-col justify-between bg-slate-700 pl-4 pr-5 pt-4 pb-0 rounded-md mx-1">
       <textarea
         disabled={!isEditable}
-        className="w-full h-18 resize-none bg-transparent font-bold text-xl"
+        className="w-full h-24 resize-none bg-transparent font-bold text-xl"
         value={albumEdit.title}
         onChange={(e) => handleTextChange(e, 'title')}
       />
@@ -78,6 +79,10 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
         value={albumEdit.userName}
         onChange={(e) => handleTextChange(e, 'userName')}
       />
+
+      <Link to={`${id}`} className="mt-2 text-sm text-right hover:underline">
+        Photos {'>'}
+      </Link>
 
       {/* buttons for edit mode */}
       {isEditable && (

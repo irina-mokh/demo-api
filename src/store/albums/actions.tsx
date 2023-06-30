@@ -25,3 +25,16 @@ export const getAlbums = createAsyncThunk(
     }
   }
 );
+
+export const getPhotos = createAsyncThunk(
+  'albums/getPhotos',
+  async function (id:number, { rejectWithValue }) {
+    try {
+      const response = await api.get(`albums/${id}/photos`);
+      return response.data;
+    } catch (err) {
+      // eslint-disable-next-line prettier/prettier
+      return rejectWithValue((err as AxiosError).message);
+    }
+  }
+);

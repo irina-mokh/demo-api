@@ -3,7 +3,7 @@ import { Header } from './Header';
 
 export const Layout = () => {
   return (
-    <div className="layout flex flex-col min-h-full mx-auto px-2 pt-2 max-w-6xl">
+    <div className="layout flex flex-col min-h-screen mx-auto px-2 pt-2 max-w-6xl">
       <Header></Header>
       <Outlet />
     </div>
