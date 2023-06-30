@@ -16,5 +16,5 @@ export function usePage() {
 
 export function useLS(page: string){
   const ls = localStorage.getItem('reduxState');
-  return JSON.parse(ls || '' )[page];
+  return ls ? JSON.parse(ls)[page] : {};
 }
