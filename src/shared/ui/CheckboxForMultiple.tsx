@@ -1,11 +1,15 @@
 type CheckboxForMultipleSelectProps = {
   handleSelect: (v: boolean) => void,
+  isChecked: boolean,
 };
-export const CheckboxForMultiple = ({ handleSelect }: CheckboxForMultipleSelectProps) => {
+export const CheckboxForMultiple = ({
+  handleSelect,
+  isChecked,
+}: CheckboxForMultipleSelectProps) => {
   return (
     <input
       type="checkbox"
-      defaultChecked={false}
+      checked={isChecked}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         handleSelect(e.target.checked);
       }}

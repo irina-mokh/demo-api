@@ -14,7 +14,7 @@ type PostProps = {
 
 export const Post = ({ postEdit, isEditable, handlePostChange }: PostProps) => {
   const inputCl = cn({
-    'bg-transparent w-full border-2 p-1 rounded-md': true,
+    'bg-transparent w-full border-2 p-1 rounded-md ': true,
     'border-transparent': !isEditable,
     'border-gray-400': isEditable,
   });
@@ -22,12 +22,16 @@ export const Post = ({ postEdit, isEditable, handlePostChange }: PostProps) => {
   return (
     <section className="mr-5">
       {/* TITLE */}
-      <textarea
-        disabled={!isEditable}
-        className={inputCl + ' h-18 resize-none font-bold text-xl'}
-        value={postEdit.title}
-        onChange={(e) => handlePostChange(e, 'title')}
-      />
+      {isEditable ? (
+        <textarea
+          disabled={!isEditable}
+          className={inputCl + ' h-10 resize-none font-bold text-xl'}
+          value={postEdit.title}
+          onChange={(e) => handlePostChange(e, 'title')}
+        />
+      ) : (
+        <p className={inputCl + ' h-10 resize-none font-bold text-xl truncate'}>{postEdit.title}</p>
+      )}
       {/* USERNAME */}
       <input
         disabled={!isEditable}
@@ -36,12 +40,18 @@ export const Post = ({ postEdit, isEditable, handlePostChange }: PostProps) => {
         onChange={(e) => handlePostChange(e, 'userName')}
       />
       {/* BODY */}
-      <textarea
-        disabled={!isEditable}
-        className={inputCl + ' h-24 resize-none my-2 text-gray-200 text-sm'}
-        onChange={(e) => handlePostChange(e, 'body')}
-        value={postEdit.body}
-      />
+      {isEditable ? (
+        <textarea
+          disabled={!isEditable}
+          className={inputCl + ' h-18 resize-none my-2 text-gray-200 text-sm'}
+          onChange={(e) => handlePostChange(e, 'body')}
+          value={postEdit.body}
+        />
+      ) : (
+        <p className={inputCl + ' h-18 resize-none my-2 text-gray-200 text-sm truncate'}>
+          {postEdit.body}
+        </p>
+      )}
     </section>
   );
 };

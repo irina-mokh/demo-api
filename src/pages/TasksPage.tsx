@@ -46,7 +46,14 @@ export const TasksPage = () => {
         setSelected(selected.filter((n) => n !== item.id));
       }
     };
-    return <Task key={item.id} handleSelect={handleSelectItem} {...item} />;
+    return (
+      <Task
+        key={item.id}
+        handleSelect={handleSelectItem}
+        {...item}
+        checked={selected.includes(item.id)}
+      />
+    );
   });
 
   const itemHandlers = {
@@ -63,7 +70,7 @@ export const TasksPage = () => {
       <Filters>
         <Sort />
         <PerPageSelect />
-        <Btn text="Add task" handler={handleAdding} isActive />
+        <Btn text="Add task" handler={handleAdding} />
       </Filters>
 
       <ul>{tasks}</ul>

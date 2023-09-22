@@ -48,7 +48,14 @@ const AlbumsPage = () => {
         setSelected(selected.filter((n) => n !== item.id));
       }
     };
-    return <Album key={item.id} id={item.id} handleSelect={handleSelectItem} />;
+    return (
+      <Album
+        key={item.id}
+        id={item.id}
+        handleSelect={handleSelectItem}
+        checked={selected.includes(item.id)}
+      />
+    );
   });
   const itemHandlers = {
     delete: deleteAlbum,

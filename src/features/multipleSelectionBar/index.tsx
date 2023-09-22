@@ -58,14 +58,14 @@ export const MultipleSelectionBar = ({
       )}
       {confirmDialogDel && (
         <ConfirmDialog
-          text="Delete tasks?"
+          text="Delete items?"
           close={() => setConfirmDialogDel(false)}
           confirm={multipleDeleting}
         />
       )}
       {confirmDialogFav && (
         <ConfirmDialog
-          text="Add albums to favorite?"
+          text="Add items to favorite?"
           close={() => setConfirmDialogFav(false)}
           confirm={multipleAddingToFav}
         />

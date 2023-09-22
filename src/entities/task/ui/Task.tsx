@@ -14,9 +14,10 @@ import { CheckboxForMultiple } from 'shared/ui/CheckboxForMultiple';
 type ITaskProps = {
   id: number,
   handleSelect: (v: boolean) => void,
+  checked: boolean,
 };
 
-export const Task = ({ id, handleSelect }: ITaskProps) => {
+export const Task = ({ id, handleSelect, checked }: ITaskProps) => {
   const { data } = useSelector(selectTasks);
   const dispatch: AppDispatch = useDispatch();
 
@@ -93,7 +94,7 @@ export const Task = ({ id, handleSelect }: ITaskProps) => {
         />
         <IconBtn type="delete" handler={() => setIsDialog(true)} />
       </div>
-      <CheckboxForMultiple handleSelect={handleSelect} />
+      <CheckboxForMultiple handleSelect={handleSelect} isChecked={checked} />
       {isDialog && (
         <ConfirmDialog
           close={closeConfirmModal}

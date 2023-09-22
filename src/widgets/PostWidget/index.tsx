@@ -8,6 +8,8 @@ import { DeletePost } from 'features/deletePost';
 import { EditBtns } from 'features/editBtns';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Btn } from 'shared/ui/Btn';
 import { CheckboxForMultiple } from 'shared/ui/CheckboxForMultiple';
 import { IconBtn } from 'shared/ui/IconBtn';
 import { IPost } from 'utils/types';
@@ -15,9 +17,10 @@ import { IPost } from 'utils/types';
 type PostWidgetProps = {
   id: number,
   handleSelect: (v: boolean) => void,
+  checked: boolean,
 };
 
-export const PostWidget = ({ id, handleSelect }: PostWidgetProps) => {
+export const PostWidget = ({ id, handleSelect, checked }: PostWidgetProps) => {
   const { data } = useSelector(selectPosts);
   const post = data.filter((p: IPost) => p.id === id)[0];
 
@@ -53,7 +56,10 @@ export const PostWidget = ({ id, handleSelect }: PostWidgetProps) => {
       <article className="content flex flex-col justify-between h-full">
         <Post postEdit={postEdit} isEditable={isEditable} handlePostChange={handleTextChange} />
         {/* post buttons */}
-        <div className="controls flex justify-end mx-2 my-1">
+        <div className="controls flex justify-end align-center mx-2 my-1">
+          <Link to={`${id}`} className="mr-auto">
+            <Btn text="See post"></Btn>
+          </Link>
           <EditBtns
             isEditable={isEditable}
             setIsEditable={setIsEditable}
@@ -68,7 +74,7 @@ export const PostWidget = ({ id, handleSelect }: PostWidgetProps) => {
         </div>
       </article>
       <CommentList id={id} show={showComments} />
-      <CheckboxForMultiple handleSelect={handleSelect} />
+      <CheckboxForMultiple handleSelect={handleSelect} isChecked={checked} />
     </li>
   );
 };

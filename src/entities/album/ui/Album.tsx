@@ -16,8 +16,9 @@ import { IAlbum } from 'utils/types';
 type AlbumProps = {
   id: number,
   handleSelect: (v: boolean) => void,
+  checked: boolean,
 };
-export const Album = ({ id, handleSelect }: AlbumProps) => {
+export const Album = ({ id, handleSelect, checked }: AlbumProps) => {
   const { data } = useSelector(selectAlbums);
   const album = data.filter((p: IAlbum) => p.id === id)[0];
   const { favorite } = album;
@@ -90,7 +91,7 @@ export const Album = ({ id, handleSelect }: AlbumProps) => {
         <IconBtn type="favorite" isActive={favorite} handler={onFavBtn} />
         <IconBtn type="delete" handler={() => setIsDialog(true)} />
       </div>
-      <CheckboxForMultiple handleSelect={handleSelect} />
+      <CheckboxForMultiple handleSelect={handleSelect} isChecked={checked} />
       {isDialog && (
         <ConfirmDialog
           close={closeConfirmModal}

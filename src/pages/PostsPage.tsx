@@ -32,7 +32,9 @@ const PostsPage = () => {
   const { data: users } = useSelector(selectUsers);
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Array<number>>([]);
-  const clearSelected = () => setSelected([]);
+  const clearSelected = () => {
+    setSelected([]);
+  };
 
   const [isAddPost, setIsAddPost] = useState(false);
 
@@ -51,7 +53,14 @@ const PostsPage = () => {
         setSelected(selected.filter((n) => n !== post.id));
       }
     };
-    return <PostWidget key={post.id} id={post.id} handleSelect={handleSelectItem} />;
+    return (
+      <PostWidget
+        key={post.id}
+        id={post.id}
+        handleSelect={handleSelectItem}
+        checked={selected.includes(post.id)}
+      />
+    );
   });
 
   const itemHandlers = {
@@ -72,7 +81,7 @@ const PostsPage = () => {
         <Sort />
         <FavoriteFilter />
         <PerPageSelect />
-        <Btn text="Add post" handler={handleAdding} isActive />
+        <Btn text="Add post" handler={handleAdding} />
       </Filters>
 
       {/* POSTS */}

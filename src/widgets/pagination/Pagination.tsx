@@ -11,7 +11,7 @@ export const Pagination = ({ length, setPage, perPage, currentP }: PaginationPro
 
   const pages = Array.from(Array(Math.ceil(count)).keys());
   const pagesEls = pages.map((n) => (
-    <Btn key={n} text={String(n + 1)} handler={() => setPage(n)} isActive={n == currentP} />
+    <Btn key={n} text={String(n + 1)} handler={() => setPage(n)} accent={n == currentP} />
   ));
   return <div className="pagination child:mx-1 mt-4 w-full">{pagesEls}</div>;
 };
