@@ -1,4 +1,4 @@
-import { IComment } from 'utils/types';
+import { IComment } from 'shared/utils/types';
 
 export const Comment = ({ email, body, name }: IComment) => {
   return (

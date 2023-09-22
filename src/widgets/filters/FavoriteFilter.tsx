@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 import { AppDispatch, HANDLERS } from 'app/store';
-import { useLS, usePage } from 'utils/hooks';
+import { useLS, usePage } from 'shared/utils/hooks';
 
 export const FavoriteFilter = () => {
   const dispatch: AppDispatch = useDispatch();

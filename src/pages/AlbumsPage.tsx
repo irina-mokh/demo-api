@@ -18,9 +18,9 @@ import { Sort } from 'widgets/filters/Sort';
 import { Filters } from 'widgets/filters';
 import { MultipleSelectionBar } from '../features/multipleSelectionBar';
 
-import { useItemsPerPage } from '../utils/hooks';
-import { IItem } from '../utils/types';
-import { updateDisplayItems } from '../utils/helpers';
+import { useItemsPerPage } from '../shared/utils/hooks';
+import { IItem } from '../shared/utils/types';
+import { updateDisplayItems } from '../shared/utils/helpers';
 
 const AlbumsPage = () => {
   const dispatch: AppDispatch = useDispatch();

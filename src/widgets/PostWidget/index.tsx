@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { Btn } from 'shared/ui/Btn';
 import { CheckboxForMultiple } from 'shared/ui/CheckboxForMultiple';
 import { IconBtn } from 'shared/ui/IconBtn';
-import { IPost } from 'utils/types';
+import { IPost } from 'shared/utils/types';
 
 type PostWidgetProps = {
   id: number,

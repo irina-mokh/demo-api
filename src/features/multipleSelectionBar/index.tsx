@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Btn } from 'shared/ui/Btn';
 import { ConfirmDialog } from 'shared/ui/ConfirmDialog';
-import { IItem } from 'utils/types';
+import { IItem } from 'shared/utils/types';
 import { AnyAction } from '@reduxjs/toolkit';
 import { AppDispatch } from 'app/store';
 

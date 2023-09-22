@@ -4,7 +4,7 @@ import { AppDispatch, HANDLERS } from 'app/store';
 
 import { Select } from 'shared/ui/Select';
 
-import { useLS, usePage } from 'utils/hooks';
+import { useLS, usePage } from 'shared/utils/hooks';
 
 const PER_PAGE_OPTIONS = [10, 20, 50, 100, 'all'];
 

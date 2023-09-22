@@ -1,7 +1,7 @@
 import { Comment } from 'entities/comment/ui/Comment';
 import { useEffect, useState } from 'react';
-import { api } from 'utils/axios';
-import { IComment } from 'utils/types';
+import { api } from 'shared/utils/axios';
+import { IComment } from 'shared/utils/types';
 
 type CommentListProps = {
   id: number,

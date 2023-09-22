@@ -1,8 +1,8 @@
 // actions.tsx is for async actions
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from 'utils/axios';
+import { api } from 'shared/utils/axios';
 import { AxiosError } from 'axios';
-import { ITask } from 'utils/types';
+import { ITask } from 'shared/utils/types';
 
 export const getTasks = createAsyncThunk(
   'tasks/getTasks',

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { IPost } from 'utils/types';
+import { IPost } from 'shared/utils/types';
 
 type PostProps = {
   postEdit: IPost,

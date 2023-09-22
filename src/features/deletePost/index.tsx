@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ConfirmDialog } from 'shared/ui/ConfirmDialog';
 import { IconBtn } from 'shared/ui/IconBtn';
-import { IPost } from 'utils/types';
+import { IPost } from 'shared/utils/types';
 
 export const DeletePost = ({ id, title, userName }: IPost) => {
   const dispatch: AppDispatch = useDispatch();

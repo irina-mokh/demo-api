@@ -13,7 +13,7 @@ import albumsReducer, {
 } from 'entities/album/model/reducer';
 import tasksReducer, { changeTasksSortType, setTasksPerPage } from 'entities/task/model/reducer';
 import usersReducer from 'entities/user/model/reducer';
-import { IExtraFilterHANDLERS } from 'utils/types';
+import { IExtraFilterHANDLERS } from 'shared/utils/types';
 
 const persistedState = () => {
   let state;

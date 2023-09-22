@@ -8,7 +8,7 @@ import { addTask } from 'entities/task/model/actions';
 import { Modal } from 'shared/ui/Modal';
 import { Btn } from 'shared/ui/Btn';
 
-import { AddTaskInputs, ITask } from 'utils/types';
+import { AddTaskInputs, ITask } from 'shared/utils/types';
 
 type AddTaskFormProps = {
   close: () => void,

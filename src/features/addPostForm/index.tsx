@@ -9,7 +9,7 @@ import { addPost } from 'entities/post/model/actions';
 import { Modal } from 'shared/ui/Modal';
 import { Btn } from 'shared/ui/Btn';
 
-import { AddPostInputs, IPost, IUser } from 'utils/types';
+import { AddPostInputs, IPost, IUser } from 'shared/utils/types';
 
 type AddPostFormProps = {
   close: () => void,

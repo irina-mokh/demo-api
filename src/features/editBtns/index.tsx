@@ -1,5 +1,5 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import { IItem } from 'utils/types';
+import { IItem } from 'shared/utils/types';
 import { IconBtn } from 'shared/ui/IconBtn';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'app/store';

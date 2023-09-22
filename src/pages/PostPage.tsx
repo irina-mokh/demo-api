@@ -1,4 +1,4 @@
-import { IPost } from 'utils/types';
+import { IPost } from 'shared/utils/types';
 import Page from './Page';
 import { Link, useParams } from 'react-router-dom';
 import { selectPosts } from 'entities/post/model/selectors';
@@ -9,7 +9,6 @@ const PostPage = () => {
   const id = useParams().id || 0;
   const { data } = useSelector(selectPosts);
   const post: IPost = data.filter((p) => p.id == id)[0];
-  console.log(post);
   return (
     <Page title={`Post: ${id}`}>
       <section>

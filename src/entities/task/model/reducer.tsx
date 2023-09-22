@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { addTask, getTasks } from './actions';
-import { ITasksState } from 'utils/types';
-import { editItem, deleteItem, setPerPage, changeSort } from 'utils/helpers';
+import { ITasksState } from 'shared/utils/types';
+import { editItem, deleteItem, setPerPage, changeSort } from 'shared/utils/helpers';
 
 const initialState: ITasksState = {
   data: [],

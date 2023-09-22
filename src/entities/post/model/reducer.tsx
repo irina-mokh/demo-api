@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addPost, getPosts } from './actions';
-import { IPostsState } from 'utils/types';
+import { addPost, getAllPostsWithUserNames } from './actions';
+import { IPostsState } from 'shared/utils/types';
 import {
   changeSingleFilter,
   changeSort,
@@ -8,7 +8,7 @@ import {
   deleteItem,
   editItem,
   setPerPage,
-} from 'utils/helpers';
+} from 'shared/utils/helpers';
 
 const initialState: IPostsState = {
   data: [],
@@ -36,14 +36,14 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // getPosts
-      .addCase(getPosts.pending, (state) => {
+      .addCase(getAllPostsWithUserNames.pending, (state) => {
         state.error = null;
       })
-      .addCase(getPosts.fulfilled, (state, { payload }) => {
+      .addCase(getAllPostsWithUserNames.fulfilled, (state, { payload }) => {
         state.error = null;
         state.data = [...payload];
       })
-      .addCase(getPosts.rejected, (state, { payload }) => {
+      .addCase(getAllPostsWithUserNames.rejected, (state, { payload }) => {
         state.error = String(payload);
       })
       // addPost

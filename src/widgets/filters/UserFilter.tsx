@@ -5,8 +5,8 @@ import { AppDispatch, HANDLERS } from 'app/store';
 import { selectUsers } from 'entities/user/model/selectors';
 
 import { IconBtn } from 'shared/ui/IconBtn';
-import { useLS, usePage } from 'utils/hooks';
-import { IUser } from 'utils/types';
+import { useLS, usePage } from 'shared/utils/hooks';
+import { IUser } from 'shared/utils/types';
 
 export const UserFilter = () => {
   const dispatch: AppDispatch = useDispatch();

@@ -2,7 +2,7 @@ import { AppDispatch } from 'app/store';
 import { editPost } from 'entities/post/model/reducer';
 import { useDispatch } from 'react-redux';
 import { IconBtn } from 'shared/ui/IconBtn';
-import { IPost } from 'utils/types';
+import { IPost } from 'shared/utils/types';
 
 type AddPostToFavProps = {
   post: IPost,

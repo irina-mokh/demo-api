@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAlbums, getPhotos } from './actions';
-import { IAlbumsState } from 'utils/types';
+import { IAlbumsState } from 'shared/utils/types';
 import {
   changeSingleFilter,
   changeSort,
@@ -8,7 +8,7 @@ import {
   deleteItem,
   editItem,
   setPerPage,
-} from 'utils/helpers';
+} from 'shared/utils/helpers';
 
 const initialState: IAlbumsState = {
   data: [],

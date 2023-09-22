@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IPhoto } from 'utils/types';
+import { IPhoto } from 'shared/utils/types';
 import { Modal } from 'shared/ui/Modal';
 
 export const Photo = ({ thumbnailUrl, url, title }: IPhoto) => {

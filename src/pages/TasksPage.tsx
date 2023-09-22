@@ -16,9 +16,9 @@ import { Pagination } from '../widgets/pagination/Pagination';
 import { AddTaskForm } from '../features/addTaskForm';
 import { Btn } from '../shared/ui/Btn';
 
-import { useItemsPerPage } from '../utils/hooks';
-import { IItem } from '../utils/types';
-import { updateDisplayTasks } from '../utils/helpers';
+import { useItemsPerPage } from '../shared/utils/hooks';
+import { IItem } from '../shared/utils/types';
+import { updateDisplayTasks } from '../shared/utils/helpers';
 
 export const TasksPage = () => {
   const dispatch: AppDispatch = useDispatch();

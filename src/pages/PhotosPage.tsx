@@ -8,7 +8,7 @@ import { selectAlbums } from 'entities/album/model/selectors';
 
 import Page from './Page';
 import { Photo } from '../entities/photo/ui/Photo';
-import { IPhoto } from 'utils/types';
+import { IPhoto } from 'shared/utils/types';
 
 const PhotosPage = () => {
   const dispatch: AppDispatch = useDispatch();

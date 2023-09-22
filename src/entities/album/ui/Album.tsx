@@ -11,7 +11,7 @@ import { IconBtn } from 'shared/ui/IconBtn';
 import { ConfirmDialog } from 'shared/ui/ConfirmDialog';
 import { EditBtns } from 'features/editBtns';
 import { CheckboxForMultiple } from 'shared/ui/CheckboxForMultiple';
-import { IAlbum } from 'utils/types';
+import { IAlbum } from 'shared/utils/types';
 
 type AlbumProps = {
   id: number,

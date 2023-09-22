@@ -21,7 +21,7 @@ const Page = ({ title, children }: PageProps) => {
     }
   }, []);
   return (
-    <main className="page p-4 bg-gray-800 grow">
+    <main className="page p-4 bg-gray-800 grow overflow-x-hidden">
       <h2 className="visually-hidden">{title}</h2>
       {children}
     </main>
