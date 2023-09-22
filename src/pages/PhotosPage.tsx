@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '../store';
-import { getPhotos } from '../store/albums/actions';
-import { selectAlbums } from '../store/albums/selectors';
+import { AppDispatch } from 'app/store';
+import { getPhotos } from 'entities/album/model/actions';
+import { selectAlbums } from 'entities/album/model/selectors';
 
-import { Page } from './Page';
-import { Photo } from '../components/Photo';
+import Page from './Page';
+import { Photo } from '../entities/photo/ui/Photo';
+import { IPhoto } from 'utils/types';
 
-export const PhotosPage = () => {
+const PhotosPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { photos } = useSelector(selectAlbums);
 
@@ -18,7 +19,7 @@ export const PhotosPage = () => {
     dispatch(getPhotos(+id));
   });
 
-  const thumbs = photos.map((photo) => <Photo key={photo.id} {...photo} />);
+  const thumbs = photos.map((photo: IPhoto) => <Photo key={photo.id} {...photo} />);
   return (
     <Page title="Album">
       <section>
@@ -28,3 +29,4 @@ export const PhotosPage = () => {
     </Page>
   );
 };
+export default PhotosPage;

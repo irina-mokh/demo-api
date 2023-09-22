@@ -1,28 +1,28 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
-import { Page } from './Page';
+import { AppDispatch } from 'app/store';
+import Page from './Page';
 import { useEffect, useState } from 'react';
 
-import { getAlbums } from '../store/albums/actions';
-import { selectAlbums } from '../store/albums/selectors';
-import { selectUsers } from '../store/users/selectors';
-import { deleteAlbum, editAlbum } from '../store/albums/reducer';
+import { getAlbums } from 'entities/album/model/actions';
+import { selectAlbums } from 'entities/album/model/selectors';
+import { selectUsers } from 'entities/user/model/selectors';
+import { deleteAlbum, editAlbum } from 'entities/album/model/reducer';
 
-import { Album } from '../components/Album';
-import { Pagination } from '../components/Pagination';
-import { TitleSearch } from '../components/Filters/TitleSearch';
-import { UserFilter } from '../components/Filters/UserFilter';
-import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
-import { PerPageSelect } from '../components/Filters/PerPageSelect';
-import { Sort } from '../components/Filters/Sort';
-import { Filters } from '../components/Filters';
-import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+import { Album } from 'entities/album/ui/Album';
+import { Pagination } from 'widgets/pagination/Pagination';
+import { TitleSearch } from 'widgets/filters/TitleSearch';
+import { UserFilter } from 'widgets/filters/UserFilter';
+import { FavoriteFilter } from 'widgets/filters/FavoriteFilter';
+import { PerPageSelect } from 'widgets/filters/PerPageSelect';
+import { Sort } from 'widgets/filters/Sort';
+import { Filters } from 'widgets/filters';
+import { MultipleSelectionBar } from '../features/multipleSelectionBar';
 
 import { useItemsPerPage } from '../utils/hooks';
 import { IItem } from '../utils/types';
 import { updateDisplayItems } from '../utils/helpers';
 
-export const AlbumsPage = () => {
+const AlbumsPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data, sort, perPage, filter } = useSelector(selectAlbums);
   const { data: users } = useSelector(selectUsers);
@@ -79,3 +79,5 @@ export const AlbumsPage = () => {
     </Page>
   );
 };
+
+export default AlbumsPage;

@@ -1,30 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '../store';
-import { selectPosts } from '../store/posts/selectors';
-import { selectUsers } from '../store/users/selectors';
-import { getPosts } from '../store/posts/actions';
-import { deletePost, editPost } from '../store/posts/reducer';
+import { AppDispatch } from 'app/store';
+import { selectPosts } from 'entities/post/model/selectors';
+import { selectUsers } from 'entities/user/model/selectors';
+import { getPosts } from 'entities/post/model/actions';
+import { deletePost, editPost } from 'entities/post/model/reducer';
 
-import { Page } from './Page';
-import { Post } from '../components/Post';
-import { PerPageSelect } from '../components/Filters/PerPageSelect';
-import { UserFilter } from '../components/Filters/UserFilter';
-import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
-import { TitleSearch } from '../components/Filters/TitleSearch';
-import { Btn } from '../components/Btn';
-import { AddPostForm } from '../components/AddPostForm';
-import { Pagination } from '../components/Pagination';
-import { Sort } from '../components/Filters/Sort';
-import { Filters } from '../components/Filters';
-import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+import Page from './Page';
+import { Post } from '../entities/post/ui/Post';
+import { PerPageSelect } from '../widgets/filters/PerPageSelect';
+import { UserFilter } from 'widgets/filters/UserFilter';
+import { FavoriteFilter } from '../widgets/filters/FavoriteFilter';
+import { TitleSearch } from 'widgets/filters/TitleSearch';
+import { Btn } from '../shared/ui/Btn';
+import { AddPostForm } from '../features/addPostForm';
+import { Pagination } from '../widgets/pagination/Pagination';
+import { Sort } from 'widgets/filters/Sort';
+import { Filters } from 'widgets/filters';
+import { MultipleSelectionBar } from '../features/multipleSelectionBar';
 
 import { useItemsPerPage } from '../utils/hooks';
 import { IItem } from '../utils/types';
 import { updateDisplayItems } from '../utils/helpers';
+import { PostWidget } from 'widgets/PostWidget';
 
-export const PostsPage = () => {
+const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data, perPage, sort, filter } = useSelector(selectPosts);
   const display = updateDisplayItems({ data, sort, ...filter, page: 'posts' });
@@ -50,7 +51,7 @@ export const PostsPage = () => {
         setSelected(selected.filter((n) => n !== post.id));
       }
     };
-    return <Post key={post.id} id={post.id} handleSelect={handleSelectItem} />;
+    return <PostWidget key={post.id} id={post.id} handleSelect={handleSelectItem} />;
   });
 
   const itemHandlers = {
@@ -95,3 +96,5 @@ export const PostsPage = () => {
     </Page>
   );
 };
+
+export default PostsPage;

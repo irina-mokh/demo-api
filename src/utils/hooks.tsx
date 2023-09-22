@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { IItem, Pages } from './types';
-import { store } from '../store';
+import { store } from 'app/store';
 
 export function useItemsPerPage(
   display: Array<IItem>,

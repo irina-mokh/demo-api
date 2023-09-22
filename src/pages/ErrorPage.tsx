@@ -1,9 +1,11 @@
-import { Page } from './Page';
+import Page from 'pages/Page';
 
-export const ErrorPage = () => {
+const ErrorPage = () => {
   return (
     <Page title="Error">
       <h3> 404: Page not found</h3>
     </Page>
   );
 };
+
+export default ErrorPage;
