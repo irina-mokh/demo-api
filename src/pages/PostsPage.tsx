@@ -1,48 +1,49 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '../store';
-import { selectPosts } from '../store/posts/selectors';
-import { selectUsers } from '../store/users/selectors';
-import { getPosts } from '../store/posts/actions';
-import { deletePost, editPost } from '../store/posts/reducer';
+import { AppDispatch } from 'app/store';
+import { selectPosts } from 'entities/post/model/selectors';
+import { selectUsers } from 'entities/user/model/selectors';
+import { getAllPostsWithUserNames } from 'entities/post/model/actions';
+import { deletePost, editPost } from 'entities/post/model/reducer';
 
-import { Page } from './Page';
-import { Post } from '../components/Post';
-import { PerPageSelect } from '../components/Filters/PerPageSelect';
-import { UserFilter } from '../components/Filters/UserFilter';
-import { FavoriteFilter } from '../components/Filters/FavoriteFilter';
-import { TitleSearch } from '../components/Filters/TitleSearch';
-import { Btn } from '../components/Btn';
-import { AddPostForm } from '../components/AddPostForm';
-import { Pagination } from '../components/Pagination';
-import { Sort } from '../components/Filters/Sort';
-import { Filters } from '../components/Filters';
-import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
+import Page from './Page';
+import { UserFilter } from 'widgets/filters/UserFilter';
+import { FavoriteFilter } from '../widgets/filters/FavoriteFilter';
+import { TitleSearch } from 'widgets/filters/TitleSearch';
+import { Btn } from '../shared/ui/Btn';
+import { AddPostForm } from '../features/addPostForm';
+import { Sort } from 'widgets/filters/Sort';
+import { Filters } from 'widgets/filters';
+import { MultipleSelectionBar } from '../features/multipleSelectionBar';
 
-import { useItemsPerPage } from '../utils/hooks';
-import { IItem } from '../utils/types';
-import { updateDisplayItems } from '../utils/helpers';
+import { updateDisplayItems } from '../shared/utils/helpers';
+import { PostWidget } from 'widgets/PostWidget';
 
-export const PostsPage = () => {
+const POSTS_PER_PAGE = 10;
+
+const PostsPage = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { data, perPage, sort, filter } = useSelector(selectPosts);
+  const { data, sort, filter } = useSelector(selectPosts);
   const display = updateDisplayItems({ data, sort, ...filter, page: 'posts' });
-  const { data: users } = useSelector(selectUsers);
   const [page, setPage] = useState(0);
+  const { data: users } = useSelector(selectUsers);
+  
   const [selected, setSelected] = useState<Array<number>>([]);
-  const clearSelected = () => setSelected([]);
+  const clearSelected = () => {
+    setSelected([]);
+  };
 
   const [isAddPost, setIsAddPost] = useState(false);
 
   useEffect(() => {
-    if (!data.length && users.length) dispatch(getPosts(users));
+    if (!data.length && users.length) dispatch(getAllPostsWithUserNames(users));
   }, [users]);
-
-  // display posts depending on page settings
-  const itemsPerPage: Array<IItem> = useItemsPerPage(display, perPage, page);
-
-  const items = itemsPerPage.map((post) => {
+  
+  useEffect(() => {
+    setPage(0);
+  }, [filter]);
+  const items = display.slice(0, (page + 1)*POSTS_PER_PAGE).map((post) => {
     const handleSelectItem = (checked: boolean) => {
       if (checked) {
         setSelected([...selected, post.id]);
@@ -50,7 +51,14 @@ export const PostsPage = () => {
         setSelected(selected.filter((n) => n !== post.id));
       }
     };
-    return <Post key={post.id} id={post.id} handleSelect={handleSelectItem} />;
+    return (
+      <PostWidget
+        key={post.id}
+        id={post.id}
+        handleSelect={handleSelectItem}
+        checked={selected.includes(post.id)}
+      />
+    );
   });
 
   const itemHandlers = {
@@ -63,6 +71,21 @@ export const PostsPage = () => {
     setIsAddPost(true);
   };
 
+  const scrollHandler = (e: Event) => {
+    // eslint-disable-next-line prettier/prettier
+    const el = (e.target as Document).documentElement;
+    if (el.scrollHeight - ( el.scrollTop + window.innerHeight) < 100) {
+      setPage((p) => p + 1);
+    }
+  };
+  // infinite scroll
+  useEffect(() => {
+    document.addEventListener('scroll', scrollHandler);
+    return function () {
+      document.removeEventListener('scroll', scrollHandler);
+    };
+  }, []);
+
   return (
     <Page title="Posts">
       <Filters>
@@ -70,15 +93,14 @@ export const PostsPage = () => {
         <UserFilter />
         <Sort />
         <FavoriteFilter />
-        <PerPageSelect />
-        <Btn text="Add post" handler={handleAdding} isActive />
+        {/* <PerPageSelect /> */}
+        <Btn text="Add post" handler={handleAdding} />
       </Filters>
 
       {/* POSTS */}
       <section>
         <ul className="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2 mt-5">{items}</ul>
-
-        <Pagination currentP={page} perPage={perPage} length={display.length} setPage={setPage} />
+        {/* <Pagination currentP={page} perPage={perPage} length={display.length} setPage={setPage} /> */}
       </section>
 
       {/* MODALS */}
@@ -95,3 +117,5 @@ export const PostsPage = () => {
     </Page>
   );
 };
+
+export default PostsPage;

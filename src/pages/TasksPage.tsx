@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '../store';
-import { getTasks } from '../store/tasks/actions';
-import { Page } from './Page';
-import { selectTasks } from '../store/tasks/selectors';
-import { deleteTask, editTask } from '../store/tasks/reducer';
+import { AppDispatch } from 'app/store';
+import { getTasks } from 'entities/task/model/actions';
+import Page from './Page';
+import { selectTasks } from 'entities/task/model/selectors';
+import { deleteTask, editTask } from 'entities/task/model/reducer';
 
-import { Task } from '../components/Task';
-import { PerPageSelect } from '../components/Filters/PerPageSelect';
-import { Sort } from '../components/Filters/Sort';
-import { Filters } from '../components/Filters';
-import { MultipleSelectionBar } from '../components/MultipleSelectionBar';
-import { Pagination } from '../components/Pagination';
-import { AddTaskForm } from '../components/AddTaskForm';
-import { Btn } from '../components/Btn';
+import { Task } from 'entities/task/ui/Task';
+import { PerPageSelect } from 'widgets/filters/PerPageSelect';
+import { Sort } from 'widgets/filters/Sort';
+import { Filters } from 'widgets/filters';
+import { MultipleSelectionBar } from '../features/multipleSelectionBar';
+import { Pagination } from '../widgets/pagination/Pagination';
+import { AddTaskForm } from '../features/addTaskForm';
+import { Btn } from '../shared/ui/Btn';
 
-import { useItemsPerPage } from '../utils/hooks';
-import { IItem } from '../utils/types';
-import { updateDisplayTasks } from '../utils/helpers';
+import { useItemsPerPage } from '../shared/utils/hooks';
+import { IItem } from '../shared/utils/types';
+import { updateDisplayTasks } from '../shared/utils/helpers';
 
 export const TasksPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -46,7 +46,14 @@ export const TasksPage = () => {
         setSelected(selected.filter((n) => n !== item.id));
       }
     };
-    return <Task key={item.id} handleSelect={handleSelectItem} {...item} />;
+    return (
+      <Task
+        key={item.id}
+        handleSelect={handleSelectItem}
+        {...item}
+        checked={selected.includes(item.id)}
+      />
+    );
   });
 
   const itemHandlers = {
@@ -63,7 +70,7 @@ export const TasksPage = () => {
       <Filters>
         <Sort />
         <PerPageSelect />
-        <Btn text="Add task" handler={handleAdding} isActive />
+        <Btn text="Add task" handler={handleAdding} />
       </Filters>
 
       <ul>{tasks}</ul>
@@ -81,3 +88,5 @@ export const TasksPage = () => {
     </Page>
   );
 };
+
+export default TasksPage;
